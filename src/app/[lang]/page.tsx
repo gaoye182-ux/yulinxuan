@@ -91,7 +91,7 @@ const content: Record<Language, HomeContent> = {
   ja: {
     seoTitle: "玉林軒株式会社 | 骨董・古美術の鑑定、買取、販売",
     hero: {
-      eyebrow: "GYOKURINKEN CO., LTD.",
+      eyebrow: "",
       title: "古の美を、未来へ紡ぐ。",
       lead:
         "日本・中国・朝鮮の古美術を中心に、鑑定、買取、販売まで一貫して承ります。静かな眼差しで、器物に宿る時間と物語を次代へ届けます。",
@@ -192,7 +192,7 @@ const content: Record<Language, HomeContent> = {
   zh: {
     seoTitle: "玉林軒株式会社 | 骨董古美术鉴定、收购、销售",
     hero: {
-      eyebrow: "GYOKURINKEN CO., LTD.",
+      eyebrow: "",
       title: "传承古典之美，编织未来。",
       lead:
         "以日本、中国、朝鲜古美术为中心，提供鉴定、收购与销售服务。我们以安静而准确的眼光，将器物承载的时间与故事交给下一位藏家。",
@@ -277,7 +277,7 @@ const content: Record<Language, HomeContent> = {
   en: {
     seoTitle: "Gyokurinken Co., Ltd. | Antique and Fine Art Appraisal",
     hero: {
-      eyebrow: "GYOKURINKEN CO., LTD.",
+      eyebrow: "",
       title: "Bridging the Beauty of the Past to the Future.",
       lead:
         "We curate, appraise, purchase, and present Japanese, Chinese, and Korean antiques with a quiet gallery sensibility and careful scholarship.",
@@ -471,10 +471,7 @@ export default async function HomePage({
       />
       <section className="home-hero mx-auto grid max-w-7xl items-center gap-8 px-5 py-9 md:grid-cols-[0.86fr_1.14fr] md:py-10 lg:px-8">
         <div className="relative z-10">
-          <p className="text-xs tracking-[0.36em] text-[color:var(--gold)]">
-            {hero.eyebrow}
-          </p>
-          <h1 className="home-hero-title mt-5 max-w-2xl font-serif text-4xl font-light leading-tight text-[color:var(--ink)] md:text-5xl lg:text-[3.75rem]">
+          <h1 className="home-hero-title max-w-2xl font-serif text-4xl font-light leading-tight text-[color:var(--ink)] md:text-5xl lg:text-[3.75rem]">
             {hero.title}
           </h1>
           <p className="home-hero-lead mt-6 max-w-xl text-sm leading-7 text-[color:var(--muted)] md:text-base">

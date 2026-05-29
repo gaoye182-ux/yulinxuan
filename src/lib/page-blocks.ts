@@ -38,7 +38,6 @@ export const pageBlockDefinitions: PageBlockDefinition[] = [
           { href: "/collection", label: "蔵品紹介" },
           { href: "/new-arrivals", label: "新入荷・特選品" },
           { href: "/appraisal", label: "鑑定・買取" },
-          { href: "/blog", label: "ブログ" },
           { href: "/news", label: "新着情報" },
           { href: "/about", label: "玉林軒について" }
         ]
@@ -50,7 +49,6 @@ export const pageBlockDefinitions: PageBlockDefinition[] = [
           { href: "/collection", label: "藏品介绍" },
           { href: "/new-arrivals", label: "新入荷・精选" },
           { href: "/appraisal", label: "鉴定・收购" },
-          { href: "/blog", label: "博客" },
           { href: "/news", label: "资讯" },
           { href: "/about", label: "关于我们" }
         ]
@@ -62,7 +60,6 @@ export const pageBlockDefinitions: PageBlockDefinition[] = [
           { href: "/collection", label: "Collection" },
           { href: "/new-arrivals", label: "New Arrivals" },
           { href: "/appraisal", label: "Appraisal" },
-          { href: "/blog", label: "Blog" },
           { href: "/news", label: "News" },
           { href: "/about", label: "About" }
         ]
@@ -129,9 +126,9 @@ export const pageBlockDefinitions: PageBlockDefinition[] = [
     blockLabel: "Hero 英雄区",
     description: "首页首屏标题、副标题、CTA、徽章和主视觉图片。",
     defaultContent: {
-      ja: { eyebrow: "GYOKURINKEN CO., LTD.", title: "古の美を、未来へ紡ぐ。", lead: "日本・中国・朝鮮の古美術を中心に、鑑定、買取、販売まで一貫して承ります。", cta: "蔵品を見る", secondary: "鑑定を相談", badge: "古美術商として培った審美眼" },
-      zh: { eyebrow: "GYOKURINKEN CO., LTD.", title: "传承古典之美，编织未来。", lead: "以日本、中国、朝鲜古美术为中心，提供鉴定、收购与销售服务。", cta: "查看藏品", secondary: "咨询鉴定", badge: "源自古美术商的审美与经验" },
-      en: { eyebrow: "GYOKURINKEN CO., LTD.", title: "Bridging the Beauty of the Past to the Future.", lead: "We curate, appraise, purchase, and present Japanese, Chinese, and Korean antiques.", cta: "View Collection", secondary: "Request Appraisal", badge: "A discerning eye for antique art" }
+      ja: { eyebrow: "", title: "古の美を、未来へ紡ぐ。", lead: "日本・中国・朝鮮の古美術を中心に、鑑定、買取、販売まで一貫して承ります。", cta: "蔵品を見る", secondary: "鑑定を相談", badge: "古美術商として培った審美眼" },
+      zh: { eyebrow: "", title: "传承古典之美，编织未来。", lead: "以日本、中国、朝鲜古美术为中心，提供鉴定、收购与销售服务。", cta: "查看藏品", secondary: "咨询鉴定", badge: "源自古美术商的审美与经验" },
+      en: { eyebrow: "", title: "Bridging the Beauty of the Past to the Future.", lead: "We curate, appraise, purchase, and present Japanese, Chinese, and Korean antiques.", cta: "View Collection", secondary: "Request Appraisal", badge: "A discerning eye for antique art" }
     },
     defaultSortOrder: 10,
     imageHints: ["image"]

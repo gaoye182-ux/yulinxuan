@@ -467,7 +467,7 @@ export default async function AboutPage({
           <div className="absolute bottom-5 left-5 right-5 border border-[color:var(--gold)] bg-[rgba(255,253,248,0.92)] p-5">
             <p className="font-serif text-3xl font-light text-[color:var(--ink)]">玉林軒</p>
             <p className="mt-2 text-xs leading-5 tracking-[0.2em] text-[color:var(--gold-dark)]">
-              GYOKURINKEN CO., LTD.
+              GYOKURINKEN
             </p>
           </div>
         </div>

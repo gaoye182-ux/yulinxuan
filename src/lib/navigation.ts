@@ -23,10 +23,6 @@ export const mainNav: NavItem[] = [
     label: { ja: "鑑定・買取", zh: "鉴定・收购", en: "Appraisal" }
   },
   {
-    href: "/blog",
-    label: { ja: "ブログ", zh: "博客", en: "Blog" }
-  },
-  {
     href: "/news",
     label: { ja: "新着情報", zh: "资讯", en: "News" }
   },

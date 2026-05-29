@@ -406,7 +406,7 @@ export default async function AppraisalPage({
               Appraisal
             </p>
             <p className="mt-2 text-xs leading-5 tracking-[0.16em] text-[color:var(--muted)]">
-              GYOKURINKEN CO., LTD.
+              GYOKURINKEN
             </p>
           </div>
         </div>

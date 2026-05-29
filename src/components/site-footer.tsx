@@ -21,7 +21,7 @@ type SiteFooterProps = {
 
 export function SiteFooter({ lang, settings, navigation, footer }: SiteFooterProps) {
   const brandName = localize(settings.company.legalName, lang);
-  const brandSubLabel = localize(settings.company.legalName, "en").toUpperCase();
+  const brandSubLabel = "GYOKURINKEN";
   const address = localize(settings.contact.address, lang);
   const hours = localize(settings.businessHours.weekdays, lang);
   const holidays = localize(settings.businessHours.holidays, lang);
@@ -29,9 +29,10 @@ export function SiteFooter({ lang, settings, navigation, footer }: SiteFooterPro
   const phoneHref = telHref(settings.contact.phone);
   const lineHref = settings.contact.lineUrl || localizedPath(lang, "/contact");
   const mapsHref = mapSearchUrl(settings, lang);
-  const navItems = navigation?.items?.length
+  const navItems = (navigation?.items?.length
     ? navigation.items
-    : mainNav.map((item) => ({ href: item.href, label: item.label[lang] }));
+    : mainNav.map((item) => ({ href: item.href, label: item.label[lang] })))
+    .filter((item) => item.href !== "/blog");
   const serviceLinks = footer?.serviceLinks?.length
     ? footer.serviceLinks
     : [

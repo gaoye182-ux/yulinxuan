@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -41,6 +42,9 @@ const menuLabels: Record<Language, { open: string; close: string; language: stri
   en: { open: "Open menu", close: "Close menu", language: "Language" }
 };
 
+const brandLogoSrc = "/brand/gyokurinken-user-logo-gold.png";
+const brandSubLabel = "GYOKURINKEN";
+
 function telHref(phone: string) {
   const compact = phone.replace(/[^\d+]/g, "");
 
@@ -51,11 +55,11 @@ export function SiteHeader({ lang, settings, navigation }: SiteHeaderProps) {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const brandName = localize(settings.company.name, lang);
-  const brandSubLabel = localize(settings.company.legalName, "en").toUpperCase();
   const phoneHref = telHref(settings.contact.phone);
-  const navItems = navigation?.items?.length
+  const navItems = (navigation?.items?.length
     ? navigation.items
-    : mainNav.map((item) => ({ href: item.href, label: item.label[lang] }));
+    : mainNav.map((item) => ({ href: item.href, label: item.label[lang] })))
+    .filter((item) => item.href !== "/blog");
   const contactText = navigation?.contactLabel || contactLabel[lang];
   const menuCopy = menuLabels[lang];
 
@@ -81,12 +85,22 @@ export function SiteHeader({ lang, settings, navigation }: SiteHeaderProps) {
     <>
       <header className="sticky top-0 z-40 border-b border-[color:var(--gold)]/35 bg-[rgba(249,245,238,0.97)] backdrop-blur">
         <div className="site-header-inner mx-auto flex min-h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
-          <Link href={localizedPath(lang)} className="group flex flex-col leading-none">
-            <span className="font-serif text-2xl tracking-[0.12em] text-[color:var(--ink)]">
-              {brandName}
-            </span>
-            <span className="mt-1 text-[10px] tracking-[0.38em] text-[color:var(--gold)]">
-              {brandSubLabel}
+          <Link href={localizedPath(lang)} className="group flex min-w-0 items-center gap-2.5 leading-none sm:gap-3">
+            <Image
+              src={brandLogoSrc}
+              alt=""
+              width={90}
+              height={90}
+              priority
+              className="size-11 shrink-0 object-contain sm:size-12 lg:size-14"
+            />
+            <span className="flex min-w-0 flex-col">
+              <span className="truncate font-serif text-xl tracking-[0.1em] text-[color:var(--ink)] sm:text-2xl sm:tracking-[0.12em]">
+                {brandName}
+              </span>
+              <span className="mt-1 block truncate text-[9px] tracking-[0.2em] text-[color:var(--gold-dark)] sm:text-[10px] sm:tracking-[0.28em]">
+                {brandSubLabel}
+              </span>
             </span>
           </Link>
 
@@ -173,10 +187,21 @@ export function SiteHeader({ lang, settings, navigation }: SiteHeaderProps) {
           aria-label={menuCopy.open}
         >
           <div className="flex items-center justify-between">
-            <a href={localizedPath(lang)} className="flex flex-col leading-none">
-              <span className="font-serif text-2xl tracking-[0.12em]">{brandName}</span>
-              <span className="mt-1 text-[10px] tracking-[0.38em] text-[color:var(--gold)]">
-                {brandSubLabel}
+            <a href={localizedPath(lang)} className="flex min-w-0 items-center gap-3 leading-none">
+              <Image
+                src={brandLogoSrc}
+                alt=""
+                width={96}
+                height={96}
+                className="size-14 shrink-0 object-contain"
+              />
+              <span className="flex min-w-0 flex-col">
+                <span className="truncate font-serif text-2xl tracking-[0.12em]">
+                  {brandName}
+                </span>
+                <span className="mt-1 truncate text-[10px] tracking-[0.28em] text-[color:var(--gold-dark)]">
+                  {brandSubLabel}
+                </span>
               </span>
             </a>
             <button

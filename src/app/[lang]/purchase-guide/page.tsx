@@ -370,7 +370,7 @@ export default async function PurchaseGuidePage({
           <div className="absolute inset-0 bg-gradient-to-t from-[rgba(44,36,22,0.62)] via-transparent to-transparent" />
           <div className="absolute bottom-5 left-5 right-5 border border-white/30 bg-[rgba(255,253,248,0.9)] px-5 py-4">
             <p className="font-serif text-3xl font-light text-[color:var(--gold-dark)]">Purchase</p>
-            <p className="mt-2 text-xs leading-5 tracking-[0.16em] text-[color:var(--muted)]">GYOKURINKEN CO., LTD.</p>
+            <p className="mt-2 text-xs leading-5 tracking-[0.16em] text-[color:var(--muted)]">GYOKURINKEN</p>
           </div>
         </div>
       </section>
