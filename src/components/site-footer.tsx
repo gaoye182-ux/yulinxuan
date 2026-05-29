@@ -21,7 +21,7 @@ type SiteFooterProps = {
 
 export function SiteFooter({ lang, settings, navigation, footer }: SiteFooterProps) {
   const brandName = localize(settings.company.legalName, lang);
-  const brandSubLabel = "GYOKURINKEN";
+  const brandSubLabel = "Gyokurinken Co., Ltd.";
   const address = localize(settings.contact.address, lang);
   const hours = localize(settings.businessHours.weekdays, lang);
   const holidays = localize(settings.businessHours.holidays, lang);
