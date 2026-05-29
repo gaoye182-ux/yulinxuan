@@ -1,56 +1,84 @@
 import Link from "next/link";
-import { Archive, ClipboardCheck, FileText, FolderTree, History, Home, ImageIcon, KeyRound, LayoutDashboard, LogOut, Mail, Newspaper, PanelsTopLeft, PenTool, Search, Settings, ShieldCheck, UserRound } from "lucide-react";
+import {
+  Archive,
+  ClipboardCheck,
+  FileText,
+  FolderTree,
+  History,
+  Home,
+  ImageIcon,
+  KeyRound,
+  LayoutDashboard,
+  LogOut,
+  Mail,
+  Newspaper,
+  PanelsTopLeft,
+  PenTool,
+  Search,
+  Settings,
+  ShieldCheck,
+  UserRound
+} from "lucide-react";
 import { auth } from "@/auth";
+import { AdminLanguageSwitcher } from "@/components/admin-language-switcher";
+import { adminText, type AdminText } from "@/lib/admin-i18n";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { explainPermission, hasPermission, roleLabels, type AdminPermission } from "@/lib/admin-permissions";
 
 const adminNav = [
-  { href: "/admin", label: "总览", icon: LayoutDashboard, permission: "dashboard.read" },
-  { href: "/admin/items", label: "藏品管理", icon: Archive, permission: "content.read" },
-  { href: "/admin/categories", label: "分类管理", icon: FolderTree, permission: "content.read" },
-  { href: "/admin/appraisals", label: "鉴定申请", icon: ClipboardCheck, permission: "content.read" },
-  { href: "/admin/contacts", label: "联系留言", icon: Mail, permission: "content.read" },
-  { href: "/admin/blog", label: "博客管理", icon: PenTool, permission: "content.read" },
-  { href: "/admin/news", label: "资讯管理", icon: Newspaper, permission: "content.read" },
-  { href: "/admin/pages", label: "页面模块", icon: PanelsTopLeft, permission: "content.read" },
-  { href: "/admin/media", label: "媒体库", icon: ImageIcon, permission: "content.read" },
-  { href: "/admin/seo", label: "SEO 管理", icon: Search, permission: "settings.read" },
-  { href: "/admin/security", label: "登录安全", icon: KeyRound, permission: "dashboard.read" },
-  { href: "/admin/settings", label: "站点设置", icon: Settings, permission: "settings.read" },
-  { href: "/admin/users", label: "管理员", icon: ShieldCheck, permission: "users.read" },
-  { href: "/admin/audit-logs", label: "审计日志", icon: History, permission: "audit.read" }
+  { href: "/admin", label: { ja: "概要", zh: "总览", en: "Overview" }, icon: LayoutDashboard, permission: "dashboard.read" },
+  { href: "/admin/items", label: { ja: "蔵品管理", zh: "藏品管理", en: "Collection" }, icon: Archive, permission: "content.read" },
+  { href: "/admin/categories", label: { ja: "分類管理", zh: "分类管理", en: "Categories" }, icon: FolderTree, permission: "content.read" },
+  { href: "/admin/appraisals", label: { ja: "鑑定依頼", zh: "鉴定申请", en: "Appraisals" }, icon: ClipboardCheck, permission: "content.read" },
+  { href: "/admin/contacts", label: { ja: "お問い合わせ", zh: "联系留言", en: "Contacts" }, icon: Mail, permission: "content.read" },
+  { href: "/admin/blog", label: { ja: "ブログ", zh: "博客管理", en: "Blog" }, icon: PenTool, permission: "content.read" },
+  { href: "/admin/news", label: { ja: "新着情報", zh: "资讯管理", en: "News" }, icon: Newspaper, permission: "content.read" },
+  { href: "/admin/pages", label: { ja: "ページ", zh: "页面模块", en: "Page Blocks" }, icon: PanelsTopLeft, permission: "content.read" },
+  { href: "/admin/media", label: { ja: "メディア", zh: "媒体库", en: "Media" }, icon: ImageIcon, permission: "content.read" },
+  { href: "/admin/seo", label: { ja: "SEO 管理", zh: "SEO 管理", en: "SEO" }, icon: Search, permission: "settings.read" },
+  { href: "/admin/security", label: { ja: "ログイン安全", zh: "登录安全", en: "Login Security" }, icon: KeyRound, permission: "dashboard.read" },
+  { href: "/admin/settings", label: { ja: "サイト設定", zh: "站点设置", en: "Site Settings" }, icon: Settings, permission: "settings.read" },
+  { href: "/admin/users", label: { ja: "管理者", zh: "管理员", en: "Admins" }, icon: ShieldCheck, permission: "users.read" },
+  { href: "/admin/audit-logs", label: { ja: "監査ログ", zh: "审计日志", en: "Audit Logs" }, icon: History, permission: "audit.read" }
 ];
 
 type AdminShellProps = {
-  eyebrow?: string;
-  title: string;
-  description: string;
+  eyebrow?: AdminText;
+  title: AdminText;
+  description: AdminText;
   action?: {
     href: string;
-    label: string;
+    label: AdminText;
   };
   children: React.ReactNode;
 };
 
 export async function AdminShell({ eyebrow = "GYOKURINKEN CMS", title, description, action, children }: AdminShellProps) {
+  const locale = await getAdminLocale();
   const session = await auth();
   const isViewer = session?.user?.role === "viewer";
   const role = session?.user?.role;
+  const frontendHref = locale === "zh" ? "/zh" : locale === "en" ? "/en" : "/ja";
+  const t = (value: AdminText) => adminText(value, locale);
 
   return (
     <div className="min-h-screen bg-[#f5f1e8] text-[color:var(--ink)]">
       <header className="border-b border-[color:var(--border)] bg-[color:var(--paper)]">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-5 lg:px-8">
           <Link href="/admin" className="min-w-0">
-            <p className="text-xs tracking-[0.28em] text-[color:var(--gold)]">{eyebrow}</p>
-            <p className="mt-1 font-serif text-2xl font-light">玉林軒 管理后台</p>
+            <p className="text-xs tracking-[0.28em] text-[color:var(--gold)]">{t(eyebrow)}</p>
+            <p className="mt-1 font-serif text-2xl font-light">
+              {t({ ja: "玉林軒 管理画面", zh: "玉林軒 管理后台", en: "Gyokurinken Admin" })}
+            </p>
           </Link>
           <div className="flex flex-wrap items-center gap-2">
+            <AdminLanguageSwitcher activeLocale={locale} />
             <Link
-              href="/ja"
+              href={frontendHref}
               className="inline-flex min-h-11 items-center gap-2 border border-[color:var(--border)] px-4 text-sm text-[color:var(--muted)] transition hover:border-[color:var(--gold)] hover:text-[color:var(--gold-dark)]"
             >
               <Home aria-hidden size={15} />
-              前台
+              {t({ ja: "前台", zh: "前台", en: "Site" })}
             </Link>
             {session?.user ? (
               <>
@@ -64,7 +92,7 @@ export async function AdminShell({ eyebrow = "GYOKURINKEN CMS", title, descripti
                   className="inline-flex min-h-11 items-center gap-2 border border-[color:var(--gold)] px-4 text-sm text-[color:var(--gold-dark)] transition hover:bg-[color:var(--gold)] hover:text-white"
                 >
                   <LogOut aria-hidden size={15} />
-                  退出
+                  {t({ ja: "ログアウト", zh: "退出", en: "Sign Out" })}
                 </Link>
               </>
             ) : null}
@@ -88,21 +116,21 @@ export async function AdminShell({ eyebrow = "GYOKURINKEN CMS", title, descripti
                 <Link
                   key={item.href}
                   href={item.href}
-                  title={explainPermission(role, item.permission as AdminPermission)}
+                  title={explainPermission(role, item.permission as AdminPermission, locale)}
                   className={className}
                 >
                   <Icon aria-hidden size={16} className="shrink-0 text-[color:var(--gold-dark)]" />
-                  {item.label}
+                  {t(item.label)}
                 </Link>
               ) : (
                 <span
                   key={item.href}
-                  title={explainPermission(role, item.permission as AdminPermission)}
+                  title={explainPermission(role, item.permission as AdminPermission, locale)}
                   className={className}
                 >
                   <Icon aria-hidden size={16} className="shrink-0 text-[color:var(--gold-dark)]" />
-                  <span className="min-w-0 flex-1">{item.label}</span>
-                  <span className="text-[11px]">无权限</span>
+                  <span className="min-w-0 flex-1">{t(item.label)}</span>
+                  <span className="text-[11px]">{t({ ja: "権限なし", zh: "无权限", en: "No access" })}</span>
                 </span>
               );
             })}
@@ -110,7 +138,13 @@ export async function AdminShell({ eyebrow = "GYOKURINKEN CMS", title, descripti
           <div className="mt-4 border-t border-[color:var(--border)] pt-4">
             <div className="flex items-start gap-3 px-3 text-xs leading-6 text-[color:var(--muted)]">
               <FileText aria-hidden size={16} className="mt-1 shrink-0 text-[color:var(--gold-dark)]" />
-              <p>权限按 viewer / editor / admin / super_admin 控制页面与操作；登录安全页支持 TOTP、备用码和失败锁定审计。</p>
+              <p>
+                {t({
+                  ja: "権限は viewer / editor / admin / super_admin ごとにページと操作を制御します。ログイン安全ページでは TOTP、备用コード、失敗ロック監査を管理できます。",
+                  zh: "权限按 viewer / editor / admin / super_admin 控制页面与操作；登录安全页支持 TOTP、备用码和失败锁定审计。",
+                  en: "Permissions are controlled by viewer / editor / admin / super_admin for pages and actions. Login Security supports TOTP, backup codes, and lockout audit."
+                })}
+              </p>
             </div>
           </div>
         </aside>
@@ -118,20 +152,20 @@ export async function AdminShell({ eyebrow = "GYOKURINKEN CMS", title, descripti
         <main className="min-w-0">
           <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[color:var(--border)] pb-6">
             <div className="min-w-0">
-              <p className="text-xs tracking-[0.28em] text-[color:var(--gold)]">{eyebrow}</p>
-              <h1 className="mt-3 break-words font-serif text-3xl font-light md:text-4xl">{title}</h1>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-[color:var(--muted)]">{description}</p>
+              <p className="text-xs tracking-[0.28em] text-[color:var(--gold)]">{t(eyebrow)}</p>
+              <h1 className="mt-3 break-words font-serif text-3xl font-light md:text-4xl">{t(title)}</h1>
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-[color:var(--muted)]">{t(description)}</p>
             </div>
             {action && !isViewer ? (
               <Link
                 href={action.href}
                 className="inline-flex min-h-12 items-center justify-center border border-[color:var(--gold)] bg-[color:var(--gold)] px-5 text-sm tracking-[0.14em] text-white transition hover:bg-[color:var(--gold-dark)]"
               >
-                {action.label}
+                {t(action.label)}
               </Link>
             ) : action && isViewer ? (
               <span className="inline-flex min-h-12 items-center justify-center border border-[color:var(--border)] px-5 text-sm tracking-[0.14em] text-[color:var(--muted)] opacity-70">
-                Viewer 只读
+                {t({ ja: "Viewer 読み取り専用", zh: "Viewer 只读", en: "Viewer read only" })}
               </span>
             ) : null}
           </div>
