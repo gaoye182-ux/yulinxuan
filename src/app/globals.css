@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+:root {
+  --gold: #b08d57;
+  --gold-light: #cdb07a;
+  --gold-dark: #8a6d3f;
+  --ink: #1a1a1a;
+  --muted: #5c564e;
+  --ivory: #f9f5ee;
+  --ivory-dark: #ede8de;
+  --paper: #fffdf8;
+  --wood: #2c2416;
+  --border: #d4c9b0;
+  --red-seal: #8f2e24;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ivory);
+  color: var(--ink);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(rgba(249, 245, 238, 0.94), rgba(249, 245, 238, 0.94)),
+    radial-gradient(circle at 20% 10%, rgba(176, 141, 87, 0.12), transparent 28%),
+    var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-sans), "Noto Sans JP", "Noto Sans SC", sans-serif;
+}
+
+::selection {
+  background: var(--gold);
+  color: white;
+}
+
+.font-serif {
+  font-family: var(--font-serif), "Noto Serif JP", "Noto Serif SC", serif;
+}
+
+.section-title {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  letter-spacing: 0.14em;
+  text-align: center;
+}
+
+.section-title::after {
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  content: "";
+  display: block;
+  height: 1px;
+  width: 120px;
+}
+
+main h1:not(.home-hero-title) {
+  font-size: clamp(2rem, 3.4vw, 2.75rem) !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.25 !important;
+}
+
+@media (min-width: 768px) and (max-height: 760px) {
+  .site-header-inner {
+    min-height: 64px;
+  }
+
+  .home-hero {
+    gap: 24px;
+    padding-bottom: 28px;
+    padding-top: 28px;
+  }
+
+  .home-hero-title {
+    font-size: 3rem;
+    margin-top: 14px;
+  }
+
+  .home-hero-lead {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin-top: 16px;
+  }
+
+  .home-hero-image {
+    height: clamp(360px, 56vh, 430px);
+  }
+
+  .home-stats > div > div {
+    padding-bottom: 12px;
+    padding-top: 12px;
+  }
+}
