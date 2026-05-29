@@ -38,7 +38,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
     en: "Contact Messages"
   },
   "前台 Contact 表单已真实写入 contact_messages；此处可搜索、按状态/分类/语言筛选、更新处理状态与备注，并导出当前筛选结果 CSV。": {
-    ja: "前台のお問い合わせフォームは contact_messages に保存されます。ここで検索、状態・分類・言語の絞り込み、対応状況とメモ更新、CSV 出力ができます。",
+    ja: "フロントサイトのお問い合わせフォームは contact_messages に保存されます。ここで検索、状態・分類・言語の絞り込み、対応状況とメモ更新、CSV 出力ができます。",
     zh: "前台 Contact 表单已真实写入 contact_messages；此处可搜索、按状态/分类/语言筛选、更新处理状态与备注，并导出当前筛选结果 CSV。",
     en: "Frontend contact submissions are stored in contact_messages. Search, filter by status/category/language, update handling notes, and export the filtered CSV."
   },
@@ -78,7 +78,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
     en: "Categories"
   },
   "支持分类新增、编辑、父子级、三语名称/说明、封面媒体库选择、首页展示开关、启用状态、排序与停用。": {
-    ja: "分類の追加、編集、親子関係、三語名称・説明、カバー画像、首页表示、状態、並び順、停止を管理します。",
+    ja: "分類の追加、編集、親子関係、三語名称・説明、カバー画像、ホーム表示、状態、並び順、停止を管理します。",
     zh: "支持分类新增、编辑、父子级、三语名称/说明、封面媒体库选择、首页展示开关、启用状态、排序与停用。",
     en: "Manage category creation, editing, hierarchy, trilingual names/descriptions, cover media, home visibility, state, order, and disabling."
   },
@@ -88,7 +88,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
     en: "New Category"
   },
   "创建三语分类，设置父级、封面图、排序、启用状态和首页展示。": {
-    ja: "三語分類を作成し、親分類、カバー画像、並び順、有効状態、首页表示を設定します。",
+    ja: "三語分類を作成し、親分類、カバー画像、並び順、有効状態、ホーム表示を設定します。",
     zh: "创建三语分类，设置父级、封面图、排序、启用状态和首页展示。",
     en: "Create a trilingual category with parent, cover image, sort order, active state, and home visibility."
   },
@@ -98,7 +98,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
     en: "Edit Category"
   },
   "更新分类三语内容、父级、封面图、排序、启用状态和首页展示。": {
-    ja: "分類の三語内容、親分類、カバー画像、並び順、有効状態、首页表示を更新します。",
+    ja: "分類の三語内容、親分類、カバー画像、並び順、有効状態、ホーム表示を更新します。",
     zh: "更新分类三语内容、父级、封面图、排序、启用状态和首页展示。",
     en: "Update trilingual category content, parent, cover image, sort order, active state, and home visibility."
   },
@@ -118,7 +118,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
     en: "New Blog Post"
   },
   "创建新的鉴定师博客。提交后将保存为 Prisma blog_posts 记录，并同步前台三语 Blog 页面。": {
-    ja: "新しい鑑定士ブログを作成します。保存後は Prisma blog_posts に記録され、前台の三語 Blog ページに反映されます。",
+    ja: "新しい鑑定士ブログを作成します。保存後は Prisma blog_posts に記録され、フロントサイトの三語 Blog ページに反映されます。",
     zh: "创建新的鉴定师博客。提交后将保存为 Prisma blog_posts 记录，并同步前台三语 Blog 页面。",
     en: "Create a new appraiser blog post. It is saved to Prisma blog_posts and reflected on the trilingual frontend Blog pages."
   },
@@ -148,7 +148,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
     en: "New News"
   },
   "创建新的官网资讯。提交后将保存为 Prisma news 记录，并同步前台三语 News 页面。": {
-    ja: "新しい公式新着情報を作成します。保存後は Prisma news に記録され、前台の三語 News ページに反映されます。",
+    ja: "新しい公式新着情報を作成します。保存後は Prisma news に記録され、フロントサイトの三語 News ページに反映されます。",
     zh: "创建新的官网资讯。提交后将保存为 Prisma news 记录，并同步前台三语 News 页面。",
     en: "Create a new official news entry. It is saved to Prisma news and reflected on the trilingual frontend News pages."
   },
@@ -168,7 +168,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
     en: "Page Blocks"
   },
   "维护顶部导航、页脚、首页、About、鉴定、购买方法、FAQ、Contact / Access 的说明文案、图片、排序和发布状态。未创建的模块会由前台自动使用三语默认内容。": {
-    ja: "ナビゲーション、フッター、首页、About、鑑定、購入方法、FAQ、Contact / Access の文案、画像、並び順、公開状態を管理します。未作成モジュールは前台の三語デフォルトを使用します。",
+    ja: "ナビゲーション、フッター、ホーム、About、鑑定、購入方法、FAQ、Contact / Access の文案、画像、並び順、公開状態を管理します。未作成モジュールはフロントサイトの三語デフォルトを使用します。",
     zh: "维护顶部导航、页脚、首页、About、鉴定、购买方法、FAQ、Contact / Access 的说明文案、图片、排序和发布状态。未创建的模块会由前台自动使用三语默认内容。",
     en: "Manage navigation, footer, home, About, Appraisal, Purchase Guide, FAQ, Contact / Access copy, images, order, and publish state. Missing blocks use trilingual frontend defaults."
   },
@@ -178,7 +178,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
     en: "Media Library"
   },
   "上传图片后自动保留原图，生成 WebP 展示图和缩略图；支持 JA / ZH / EN alt 文本、搜索筛选和引用保护删除。": {
-    ja: "画像アップロード後に原图を保持し、WebP 表示图とサムネイルを生成します。JA / ZH / EN alt、検索、参照保護削除に対応します。",
+    ja: "画像アップロード後に原画像を保持し、WebP 表示画像とサムネイルを生成します。JA / ZH / EN alt、検索、参照保護削除に対応します。",
     zh: "上传图片后自动保留原图，生成 WebP 展示图和缩略图；支持 JA / ZH / EN alt 文本、搜索筛选和引用保护删除。",
     en: "Uploaded images keep originals and generate WebP display and thumbnails. Supports JA / ZH / EN alt text, search, filtering, and protected deletion."
   },
@@ -198,7 +198,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
     en: "Login Security"
   },
   "为当前管理员账号启用 TOTP 二步验证。登录时可使用认证器 6 位验证码，备用码只能使用一次；失败次数会计入临时锁定策略。": {
-    ja: "現在の管理者アカウントに TOTP 二段階認証を設定します。ログイン時は認証アプリの 6 桁コードを使用でき、备用コードは一度だけ使えます。失敗回数は一時ロック策略に反映されます。",
+    ja: "現在の管理者アカウントに TOTP 二段階認証を設定します。ログイン時は認証アプリの 6 桁コードを使用でき、バックアップコードは一度だけ使えます。失敗回数は一時ロックポリシーに反映されます。",
     zh: "为当前管理员账号启用 TOTP 二步验证。登录时可使用认证器 6 位验证码，备用码只能使用一次；失败次数会计入临时锁定策略。",
     en: "Enable TOTP two-factor authentication for the current admin account. Use a 6-digit authenticator code at login; backup codes are one-time use. Failed attempts count toward temporary lockout."
   },
@@ -208,7 +208,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
     en: "Site Settings"
   },
   "维护公司基础信息、联系方式、营业时间、Google Maps 嵌入、SEO 默认值、robots/sitemap 输出，以及可配置的登录失败锁定策略。": {
-    ja: "会社基本情報、連絡先、営業時間、Google Maps 埋め込み、SEO デフォルト、robots/sitemap 出力、ログイン失敗ロック策略を管理します。",
+    ja: "会社基本情報、連絡先、営業時間、Google Maps 埋め込み、SEO デフォルト、robots/sitemap 出力、ログイン失敗ロックポリシーを管理します。",
     zh: "维护公司基础信息、联系方式、营业时间、Google Maps 嵌入、SEO 默认值、robots/sitemap 输出，以及可配置的登录失败锁定策略。",
     en: "Manage company profile, contact details, business hours, Google Maps embed, SEO defaults, robots/sitemap output, and configurable login lockout policy."
   },
@@ -228,7 +228,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
     en: "Audit Logs"
   },
   "按操作、对象、管理员和日期筛选后台登录、锁定、内容保存、用户管理事件；每页 20 条，便于上线前追踪权限行为。": {
-    ja: "操作、対象、管理者、日付で后台ログイン、ロック、内容保存、ユーザー管理イベントを絞り込みます。1 ページ 20 件で権限動作を追跡できます。",
+    ja: "操作、対象、管理者、日付で管理画面ログイン、ロック、内容保存、ユーザー管理イベントを絞り込みます。1 ページ 20 件で権限動作を追跡できます。",
     zh: "按操作、对象、管理员和日期筛选后台登录、锁定、内容保存、用户管理事件；每页 20 条，便于上线前追踪权限行为。",
     en: "Filter backend login, lockout, content save, and user management events by action, target, admin, and date. Shows 20 records per page."
   },
@@ -262,9 +262,9 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
   "管理员已启用。": { ja: "管理者を有効化しました。", zh: "管理员已启用。", en: "Admin enabled." },
   "管理员已禁用。": { ja: "管理者を無効化しました。", zh: "管理员已禁用。", en: "Admin disabled." },
   "已生成二步验证密钥，请扫码并输入验证码启用。": { ja: "二段階認証キーを生成しました。QR を読み取り、確認コードを入力して有効化してください。", zh: "已生成二步验证密钥，请扫码并输入验证码启用。", en: "A two-factor secret was generated. Scan the QR code and enter the verification code to enable it." },
-  "二步验证已启用，请立即保存备用码。": { ja: "二段階認証を有効化しました。备用コードをすぐ保存してください。", zh: "二步验证已启用，请立即保存备用码。", en: "Two-factor authentication is enabled. Save the backup codes now." },
+  "二步验证已启用，请立即保存备用码。": { ja: "二段階認証を有効化しました。バックアップコードをすぐ保存してください。", zh: "二步验证已启用，请立即保存备用码。", en: "Two-factor authentication is enabled. Save the backup codes now." },
   "二步验证已关闭。": { ja: "二段階認証を無効化しました。", zh: "二步验证已关闭。", en: "Two-factor authentication is disabled." },
-  "备用码已重新生成，旧备用码已全部失效。": { ja: "备用コードを再生成しました。以前のコードはすべて無効です。", zh: "备用码已重新生成，旧备用码已全部失效。", en: "Backup codes were regenerated. All previous codes are now invalid." },
+  "备用码已重新生成，旧备用码已全部失效。": { ja: "バックアップコードを再生成しました。以前のコードはすべて無効です。", zh: "备用码已重新生成，旧备用码已全部失效。", en: "Backup codes were regenerated. All previous codes are now invalid." },
   "当前结果": { ja: "現在の結果", zh: "当前结果", en: "Current results" },
   "本页显示": { ja: "このページ", zh: "本页显示", en: "Shown on page" },
   "当前页": { ja: "現在ページ", zh: "当前页", en: "Current page" },
@@ -279,7 +279,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
   "排序": { ja: "並び順", zh: "排序", en: "Sort order" },
   "父级": { ja: "親分類", zh: "父级", en: "Parent" },
   "关联": { ja: "関連", zh: "关联", en: "Relations" },
-  "前台": { ja: "前台", zh: "前台", en: "Site" },
+  "前台": { ja: "サイト", zh: "前台", en: "Site" },
   "启用": { ja: "有効", zh: "启用", en: "Enable" },
   "停用": { ja: "停止", zh: "停用", en: "Disable" },
   "内容": { ja: "内容", zh: "内容", en: "Content" },
@@ -322,21 +322,21 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
   "提交": { ja: "送信", zh: "提交", en: "submitted" },
   "地区": { ja: "地域", zh: "地区", en: "Region" },
   "上传图片": { ja: "画像をアップロード", zh: "上传图片", en: "Upload Image" },
-  "一次性备用码": { ja: "ワンタイム备用コード", zh: "一次性备用码", en: "One-time Backup Codes" },
-  "备用码": { ja: "备用コード", zh: "备用码", en: "Backup Codes" },
+  "一次性备用码": { ja: "ワンタイムバックアップコード", zh: "一次性备用码", en: "One-time Backup Codes" },
+  "备用码": { ja: "バックアップコード", zh: "备用码", en: "Backup Codes" },
   "账号": { ja: "アカウント", zh: "账号", en: "Account" },
   "已启用": { ja: "有効", zh: "已启用", en: "Enabled" },
   "未启用": { ja: "未有効", zh: "未启用", en: "Not enabled" },
   "待验证启用": { ja: "検証待ち", zh: "待验证启用", en: "Pending verification" },
   "验证时间": { ja: "検証日時", zh: "验证时间", en: "Verified at" },
-  "剩余备用码": { ja: "残り备用コード", zh: "剩余备用码", en: "Backup codes left" },
+  "剩余备用码": { ja: "残りバックアップコード", zh: "剩余备用码", en: "Backup codes left" },
   "生成二维码": { ja: "QR コードを生成", zh: "生成二维码", en: "Generate QR Code" },
   "登录限制": { ja: "ログイン制限", zh: "登录限制", en: "Login Limits" },
   "认证器信息": { ja: "認証アプリ情報", zh: "认证器信息", en: "Authenticator Info" },
   "启用 TOTP 二步验证": { ja: "TOTP 二段階認証を有効化", zh: "启用 TOTP 二步验证", en: "Enable TOTP Two-factor" },
   "6 位验证码": { ja: "6 桁コード", zh: "6 位验证码", en: "6-digit code" },
-  "6 位验证码或备用码": { ja: "6 桁コードまたは备用コード", zh: "6 位验证码或备用码", en: "6-digit code or backup code" },
-  "重新生成备用码": { ja: "备用コードを再生成", zh: "重新生成备用码", en: "Regenerate Backup Codes" },
+  "6 位验证码或备用码": { ja: "6 桁コードまたはバックアップコード", zh: "6 位验证码或备用码", en: "6-digit code or backup code" },
+  "重新生成备用码": { ja: "バックアップコードを再生成", zh: "重新生成备用码", en: "Regenerate Backup Codes" },
   "重新生成": { ja: "再生成", zh: "重新生成", en: "Regenerate" },
   "关闭二步验证": { ja: "二段階認証を無効化", zh: "关闭二步验证", en: "Disable Two-factor" },
   "关闭 TOTP": { ja: "TOTP を無効化", zh: "关闭 TOTP", en: "Disable TOTP" },
@@ -367,10 +367,10 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
   "包含博客": { ja: "ブログを含める", zh: "包含博客", en: "Include blog" },
   "包含资讯": { ja: "新着情報を含める", zh: "包含资讯", en: "Include news" },
   "包含藏品": { ja: "蔵品を含める", zh: "包含藏品", en: "Include items" },
-  "登录安全策略": { ja: "ログイン安全策略", zh: "登录安全策略", en: "Login Security Policy" },
+  "登录安全策略": { ja: "ログインセキュリティポリシー", zh: "登录安全策略", en: "Login Security Policy" },
   "失败锁定阈值": { ja: "失敗ロック閾値", zh: "失败锁定阈值", en: "Lockout threshold" },
   "锁定分钟数": { ja: "ロック分数", zh: "锁定分钟数", en: "Lock minutes" },
-  "强密码策略": { ja: "強パスワード策略", zh: "强密码策略", en: "Strong password policy" },
+  "强密码策略": { ja: "強力なパスワードポリシー", zh: "强密码策略", en: "Strong password policy" },
   "要求 Admin 启用 TOTP": { ja: "Admin に TOTP を要求", zh: "要求 Admin 启用 TOTP", en: "Require TOTP for Admins" },
   "保存站点设置": { ja: "サイト設定を保存", zh: "保存站点设置", en: "Save Site Settings" },
   "当前角色只读": { ja: "現在の権限は読み取り専用", zh: "当前角色只读", en: "Current role is read-only" },
@@ -395,12 +395,12 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
   "父级分类": { ja: "親分類", zh: "父级分类", en: "Parent category" },
   "无父级": { ja: "親なし", zh: "无父级", en: "No parent" },
   "启用分类": { ja: "分類を有効化", zh: "启用分类", en: "Enable category" },
-  "首页展示": { ja: "首页表示", zh: "首页展示", en: "Show on home" },
+  "首页展示": { ja: "ホーム表示", zh: "首页展示", en: "Show on home" },
   "分类封面": { ja: "分類カバー", zh: "分类封面", en: "Category cover" },
   "清除封面": { ja: "カバーをクリア", zh: "清除封面", en: "Clear cover" },
   "停用分类": { ja: "分類を停止", zh: "停用分类", en: "Disable category" },
   "模块排序": { ja: "モジュール順", zh: "模块排序", en: "Block sort order" },
-  "发布到前台": { ja: "前台に公開", zh: "发布到前台", en: "Publish to site" },
+  "发布到前台": { ja: "サイトに公開", zh: "发布到前台", en: "Publish to site" },
   "保存模块": { ja: "モジュールを保存", zh: "保存模块", en: "Save Block" },
   "店铺": { ja: "店舗", zh: "店铺", en: "Store" },
   "地图": { ja: "地図", zh: "地图", en: "Map" },
@@ -411,7 +411,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
   "锁定中登录": { ja: "ロック中ログイン", zh: "锁定中登录", en: "Login while locked" },
   "需要二步验证": { ja: "二段階認証が必要", zh: "需要二步验证", en: "Two-factor required" },
   "二步验证失败": { ja: "二段階認証失敗", zh: "二步验证失败", en: "Two-factor failed" },
-  "TOTP 策略阻止登录": { ja: "TOTP 策略でログイン阻止", zh: "TOTP 策略阻止登录", en: "TOTP policy blocked login" },
+  "TOTP 策略阻止登录": { ja: "TOTP ポリシーによるログインブロック", zh: "TOTP 策略阻止登录", en: "TOTP policy blocked login" },
   "保存博客": { ja: "ブログを保存", zh: "保存博客", en: "Save blog" },
   "保存资讯": { ja: "新着情報を保存", zh: "保存资讯", en: "Save news" },
   "编辑管理员 / 重置密码": { ja: "管理者編集 / パスワードリセット", zh: "编辑管理员 / 重置密码", en: "Edit admin / reset password" },
@@ -421,7 +421,7 @@ const adminStringMap: Record<string, Record<AdminLocale, string>> = {
   "启用 TOTP": { ja: "TOTP 有効化", zh: "启用 TOTP", en: "Enable TOTP" },
   "启用 TOTP 失败": { ja: "TOTP 有効化失敗", zh: "启用 TOTP 失败", en: "TOTP enable failed" },
   "关闭 TOTP 失败": { ja: "TOTP 無効化失敗", zh: "关闭 TOTP 失败", en: "TOTP disable failed" },
-  "重置 TOTP 备用码": { ja: "TOTP 备用コードをリセット", zh: "重置 TOTP 备用码", en: "Reset TOTP backup codes" },
+  "重置 TOTP 备用码": { ja: "TOTP バックアップコードをリセット", zh: "重置 TOTP 备用码", en: "Reset TOTP backup codes" },
   "新增媒体": { ja: "メディア追加", zh: "新增媒体", en: "New media" },
   "上传媒体": { ja: "メディアアップロード", zh: "上传媒体", en: "Media uploaded" },
   "替换媒体保持 URL": { ja: "URL 維持でメディア差し替え", zh: "替换媒体保持 URL", en: "Replace media keeping URL" },

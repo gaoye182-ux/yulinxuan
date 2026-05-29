@@ -22,17 +22,17 @@ const failureText: Record<string, Record<AdminLocale, string>> = {
     en: "Please sign in before accessing the admin area."
   },
   TwoFactorRequired: {
-    ja: "6 桁の二段階認証コード、または备用コードを入力してください。",
+    ja: "6 桁の二段階認証コード、またはバックアップコードを入力してください。",
     zh: "请输入 6 位二步验证码，或使用一个备用码。",
     en: "Enter the 6-digit two-factor code or a backup code."
   },
   TwoFactorInvalid: {
-    ja: "二段階認証コードまたは备用コードが正しくありません。",
+    ja: "二段階認証コードまたはバックアップコードが正しくありません。",
     zh: "二步验证码或备用码不正确，请确认后重试。",
     en: "The two-factor code or backup code is incorrect."
   },
   TotpRequiredByPolicy: {
-    ja: "現在の安全策略では、Admin 以上の権限に TOTP 二段階認証が必要です。",
+    ja: "現在のセキュリティポリシーでは、Admin 以上の権限に TOTP 二段階認証が必要です。",
     zh: "当前安全策略要求 Admin 以上角色先启用 TOTP 二步验证。",
     en: "The current security policy requires TOTP for Admin roles and above."
   }
@@ -56,9 +56,9 @@ const loginCopy: Record<AdminLocale, {
     genericError: "ログインに失敗しました。時間をおいて再試行してください。",
     twoFactorEyebrow: "TWO-FACTOR",
     twoFactorTitle: "二段階認証",
-    twoFactorHelp: "認証アプリの 6 桁コードを入力してください。利用できない場合は、一度だけ使える备用コードも使用できます。",
+    twoFactorHelp: "認証アプリの 6 桁コードを入力してください。利用できない場合は、一度だけ使えるバックアップコードも使用できます。",
     twoFactorLabel: "Two-factor code",
-    twoFactorPlaceholder: "123456 または备用コード",
+    twoFactorPlaceholder: "123456 またはバックアップコード",
     back: "メール・パスワードに戻る",
     email: "Email",
     password: "Password",

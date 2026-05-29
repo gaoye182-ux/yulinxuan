@@ -486,7 +486,7 @@ export function AdminContentForm({ kind, mode, entry, media = [], readOnly = fal
                       }
                       imageUrl={imageUrl}
                       locale={locale}
-                      placeholder={t({ ja: "段落、見出し、引用、画像挿入、プレビューに対応します。Markdown 構造で保存され、前台では等価のリッチテキストとして表示されます。", zh: "支持段落、小标题、引用、图片插入和预览；以 Markdown 结构保存，前台按等价富文本渲染。", en: "Supports paragraphs, headings, quotes, image insertion, and preview. Saved as Markdown and rendered as equivalent rich text on the frontend." })}
+                      placeholder={t({ ja: "段落、見出し、引用、画像挿入、プレビューに対応します。Markdown 構造で保存され、フロントサイトでは等価のリッチテキストとして表示されます。", zh: "支持段落、小标题、引用、图片插入和预览；以 Markdown 结构保存，前台按等价富文本渲染。", en: "Supports paragraphs, headings, quotes, image insertion, and preview. Saved as Markdown and rendered as equivalent rich text on the frontend." })}
                     />
                   </div>
                 </section>

@@ -78,7 +78,7 @@ export async function AdminShell({ eyebrow = "GYOKURINKEN CMS", title, descripti
               className="inline-flex min-h-11 items-center gap-2 border border-[color:var(--border)] px-4 text-sm text-[color:var(--muted)] transition hover:border-[color:var(--gold)] hover:text-[color:var(--gold-dark)]"
             >
               <Home aria-hidden size={15} />
-              {t({ ja: "前台", zh: "前台", en: "Site" })}
+              {t({ ja: "サイト", zh: "前台", en: "Site" })}
             </Link>
             {session?.user ? (
               <>
@@ -140,7 +140,7 @@ export async function AdminShell({ eyebrow = "GYOKURINKEN CMS", title, descripti
               <FileText aria-hidden size={16} className="mt-1 shrink-0 text-[color:var(--gold-dark)]" />
               <p>
                 {t({
-                  ja: "権限は viewer / editor / admin / super_admin ごとにページと操作を制御します。ログイン安全ページでは TOTP、备用コード、失敗ロック監査を管理できます。",
+                  ja: "権限は viewer / editor / admin / super_admin ごとにページと操作を制御します。ログイン安全ページでは TOTP、バックアップコード、失敗ロック監査を管理できます。",
                   zh: "权限按 viewer / editor / admin / super_admin 控制页面与操作；登录安全页支持 TOTP、备用码和失败锁定审计。",
                   en: "Permissions are controlled by viewer / editor / admin / super_admin for pages and actions. Login Security supports TOTP, backup codes, and lockout audit."
                 })}

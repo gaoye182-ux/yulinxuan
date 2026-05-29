@@ -59,7 +59,7 @@ export default async function AdminDashboardPage({
         </h2>
         <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">
           {adminText({
-            ja: "Blog / News 管理はデータベース一覧、プレビュー、編集、新規作成、三語字段、公開状態、推薦表示、OG 画像、SEO に対応しています。viewer は閲覧専用です。メディアライブラリは URL 登録と三語 alt を扱えます。サイト設定では会社情報、連絡先、営業時間、地図、SEO、robots/sitemap、ログイン安全策略を管理できます。",
+            ja: "Blog / News 管理はデータベース一覧、プレビュー、編集、新規作成、三語フィールド、公開状態、推薦表示、OG 画像、SEO に対応しています。viewer は閲覧専用です。メディアライブラリは URL 登録と三語 alt を扱えます。サイト設定では会社情報、連絡先、営業時間、地図、SEO、robots/sitemap、ログインセキュリティポリシーを管理できます。",
             zh: "Blog / News 管理页面已提供数据库列表、预览、编辑、新增、三语字段、发布状态、推荐显示、OG 图与 SEO 区域；viewer 账号只能查看，不能进入新增或编辑保存动作。媒体库已支持 URL 登记和三语 alt 文本。站点设置页已支持公司信息、联系方式、营业时间、地图、SEO、robots/sitemap 与登录安全策略配置。",
             en: "Blog / News management supports database lists, preview, edit, create, trilingual fields, publish state, featured display, OG images, and SEO. Viewer accounts are read-only. The media library supports URL registration and trilingual alt text. Site Settings covers company info, contact details, business hours, maps, SEO, robots/sitemap, and login security policy."
           }, locale)}

@@ -240,7 +240,7 @@ export function AdminItemForm({
                   </label>
                   <label className="flex min-h-10 items-center gap-3">
                     <input name="showOnHome" type="checkbox" defaultChecked={item?.showOnHome} className="h-4 w-4 accent-[color:var(--gold)]" />
-                    {t({ ja: "首页推薦", zh: "首页推荐", en: "Home Featured" })}
+                    {t({ ja: "ホーム推薦", zh: "首页推荐", en: "Home Featured" })}
                   </label>
                 </div>
               </div>
@@ -346,7 +346,7 @@ export function AdminItemForm({
       {mode === "edit" && item?.id ? (
         <section className="border border-[color:var(--red-seal)] bg-[color:var(--paper)] p-5">
           <h2 className="font-serif text-2xl font-light text-[color:var(--red-seal)]">{t("软删除")}</h2>
-          <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "ソフト削除後、蔵品はアーカイブされ前台から非表示になります。データベース記録とメディア参照は保持されます。", zh: "软删除后藏品会归档并从前台隐藏，数据库记录与媒体引用仍保留。", en: "Soft delete archives the item and hides it from the frontend while retaining database records and media references." })}</p>
+          <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "ソフト削除後、蔵品はアーカイブされフロントサイトから非表示になります。データベース記録とメディア参照は保持されます。", zh: "软删除后藏品会归档并从前台隐藏，数据库记录与媒体引用仍保留。", en: "Soft delete archives the item and hides it from the frontend while retaining database records and media references." })}</p>
           <button formAction={softDeleteItemAction} name="id" value={item.id} className="mt-4 inline-flex min-h-11 items-center gap-2 border border-[color:var(--red-seal)] px-4 text-sm text-[color:var(--red-seal)]">
             <Trash2 size={15} />
             {t({ ja: "蔵品をソフト削除", zh: "软删除藏品", en: "Soft Delete Item" })}

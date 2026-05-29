@@ -196,7 +196,7 @@ export default async function AdminItemsPage({
                       <span className="border border-[color:var(--gold)] px-2 py-1 text-[color:var(--gold-dark)]">{statusLabel(item.status, item.deletedAt, locale)}</span>
                       {item.isNew ? <span className="border border-[color:var(--border)] px-2 py-1 text-[color:var(--muted)]">{t({ ja: "新入荷", zh: "新到", en: "New" })}</span> : null}
                       {item.isFeatured ? <span className="border border-[color:var(--border)] px-2 py-1 text-[color:var(--muted)]">{t({ ja: "特選", zh: "精选", en: "Featured" })}</span> : null}
-                      {item.showOnHome ? <span className="border border-[color:var(--border)] px-2 py-1 text-[color:var(--muted)]">{t({ ja: "首页表示", zh: "首页", en: "Home" })}</span> : null}
+                      {item.showOnHome ? <span className="border border-[color:var(--border)] px-2 py-1 text-[color:var(--muted)]">{t({ ja: "ホーム表示", zh: "首页", en: "Home" })}</span> : null}
                     </div>
                     <h3 className="mt-3 break-words font-serif text-2xl font-light">{localizedValue(name, locale, item.slug)}</h3>
                     <p className="mt-2 break-words text-sm text-[color:var(--muted)]">{item.slug}</p>

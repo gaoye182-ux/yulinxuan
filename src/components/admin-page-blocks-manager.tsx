@@ -120,7 +120,7 @@ const blockLabels: Record<string, AdminText> = {
 
 const blockDescriptions: Record<string, AdminText> = {
   "layout:navigation": {
-    ja: "前台のトップナビ、モバイルメニュー、お問い合わせボタン文言です。配列項目は href と label に対応します。",
+    ja: "フロントサイトのトップナビ、モバイルメニュー、お問い合わせボタン文言です。配列項目は href と label に対応します。",
     zh: "前台顶部导航、移动菜单和联系按钮文案。数组项支持 href、label。",
     en: "Frontend header navigation, mobile menu, and contact button copy. Array items support href and label."
   },
@@ -190,7 +190,7 @@ const blockDescriptions: Record<string, AdminText> = {
     en: "Access page banner, overview, transport, parking, hours, notes, map, and CTA."
   },
   "about:content": {
-    ja: "About ページの banner、story、代表挨拶、理念、年表、gallery、許可、CTA です。保存 JSON は前台デフォルトを上書きします。",
+    ja: "About ページの banner、story、代表挨拶、理念、年表、gallery、許可、CTA です。保存 JSON はフロントサイトのデフォルトを上書きします。",
     zh: "关于页面的 banner、story、代表挨拶、理念、年表、gallery、许可和 CTA。保存的 JSON 会覆盖前台默认内容。",
     en: "About page banner, story, greeting, philosophy, timeline, gallery, credentials, and CTA. Saved JSON overrides frontend defaults."
   },

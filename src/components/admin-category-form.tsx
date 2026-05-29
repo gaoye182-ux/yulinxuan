@@ -200,7 +200,7 @@ export function AdminCategoryForm({
       {mode === "edit" && category?.id ? (
         <section className="border border-[color:var(--red-seal)] bg-[color:var(--paper)] p-5">
           <h2 className="font-serif text-2xl font-light text-[color:var(--red-seal)]">{t("停用分类")}</h2>
-          <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "停止後、前台の分類フィルターと首页分類モジュールには表示されません。既存蔵品の分類関連は保持されます。", zh: "停用后前台分类筛选与首页分类模块不再展示该分类，已有藏品仍保留分类关联。", en: "After disabling, the category is hidden from frontend filters and home category modules. Existing item associations remain." })}</p>
+          <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "停止後、フロントサイトの分類フィルターとホーム分類モジュールには表示されません。既存蔵品の分類関連は保持されます。", zh: "停用后前台分类筛选与首页分类模块不再展示该分类，已有藏品仍保留分类关联。", en: "After disabling, the category is hidden from frontend filters and home category modules. Existing item associations remain." })}</p>
           <button formAction={disableCategoryAction} name="id" value={category.id} className="mt-4 inline-flex min-h-11 items-center gap-2 border border-[color:var(--red-seal)] px-4 text-sm text-[color:var(--red-seal)]">
             <Trash2 size={15} />
             {t("停用分类")}

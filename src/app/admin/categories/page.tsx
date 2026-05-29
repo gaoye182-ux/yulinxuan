@@ -125,7 +125,7 @@ export default async function AdminCategoriesPage({
         <section className="overflow-hidden border border-[color:var(--border)] bg-[color:var(--paper)]">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[color:var(--border)] px-5 py-4">
             <h2 className="font-serif text-2xl font-light">{t({ ja: "分類一覧", zh: "分类列表", en: "Category List" })}</h2>
-            <p className="text-sm text-[color:var(--muted)]">{t({ ja: "首页表示と前台フィルターは有効な分類のみを読み込みます。", zh: "首页展示和前台筛选只读取启用分类。", en: "Home display and frontend filters only use active categories." })}</p>
+            <p className="text-sm text-[color:var(--muted)]">{t({ ja: "ホーム表示とフロントサイトのフィルターは有効な分類のみを読み込みます。", zh: "首页展示和前台筛选只读取启用分类。", en: "Home display and frontend filters only use active categories." })}</p>
           </div>
 
           <div className="grid gap-0">
@@ -150,7 +150,7 @@ export default async function AdminCategoriesPage({
                       <span className={`border px-2 py-1 ${category.isActive ? "border-[color:var(--gold)] text-[color:var(--gold-dark)]" : "border-[color:var(--red-seal)] text-[color:var(--red-seal)]"}`}>
                         {category.isActive ? t("启用") : t("停用")}
                       </span>
-                      {category.showOnHome ? <span className="border border-[color:var(--border)] px-2 py-1 text-[color:var(--muted)]">{t({ ja: "首页表示", zh: "首页展示", en: "Home display" })}</span> : null}
+                      {category.showOnHome ? <span className="border border-[color:var(--border)] px-2 py-1 text-[color:var(--muted)]">{t({ ja: "ホーム表示", zh: "首页展示", en: "Home display" })}</span> : null}
                       {category.parent ? <span className="border border-[color:var(--border)] px-2 py-1 text-[color:var(--muted)]">{t({ ja: "子分類", zh: "子分类", en: "Child category" })}</span> : null}
                     </div>
                     <h3 className="mt-3 break-words font-serif text-2xl font-light">{localizedValue(name, locale, category.slug)}</h3>

@@ -93,7 +93,7 @@ export default async function AdminSecurityPage({
       {backupCodes.length ? (
         <section className="mt-8 border border-[color:var(--gold)] bg-[color:var(--paper)] p-5">
           <h2 className="font-serif text-2xl font-light">{t("一次性备用码")}</h2>
-          <p className="mt-2 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "これらの备用コードは一度だけ表示されます。パスワード管理ツールに保存してください。各コードはログイン成功後すぐ無効になります。", zh: "这些备用码只显示一次。请保存到密码管理器；每个备用码登录成功后会立即失效。", en: "These backup codes are shown only once. Save them in a password manager; each code is invalidated immediately after successful login." })}</p>
+          <p className="mt-2 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "これらのバックアップコードは一度だけ表示されます。パスワード管理ツールに保存してください。各コードはログイン成功後すぐ無効になります。", zh: "这些备用码只显示一次。请保存到密码管理器；每个备用码登录成功后会立即失效。", en: "These backup codes are shown only once. Save them in a password manager; each code is invalidated immediately after successful login." })}</p>
           <div className="mt-4 grid gap-2 sm:grid-cols-2 md:grid-cols-4">
             {backupCodes.map((code) => (
               <code key={code} className="border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 py-2 text-center text-sm text-[color:var(--ink)]">
@@ -145,7 +145,7 @@ export default async function AdminSecurityPage({
             {t({ ja: `パスワードまたは二段階認証コードが連続 ${securityPolicy.maxFailedLogins} 回失敗すると、アカウントは ${securityPolicy.lockMinutes} 分間一時ロックされます。成功、失敗、有効化、無効化の操作はすべて監査ログに記録されます。`, zh: `密码或二步验证码连续失败 ${securityPolicy.maxFailedLogins} 次后，账号会临时锁定 ${securityPolicy.lockMinutes} 分钟。所有成功、失败、启用和关闭操作都会写入审计日志。`, en: `After ${securityPolicy.maxFailedLogins} consecutive password or two-factor failures, the account is locked for ${securityPolicy.lockMinutes} minutes. Successful, failed, enabled, and disabled actions are written to audit logs.` })}
           </p>
           <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">
-            {t({ ja: `現在の策略はサイト設定で管理されます。新しい JWT セッションは ${securityPolicy.sessionMaxAgeHours} 時間有効で、middleware と后台権限ガードで強制期限切れになります。強パスワード策略は${securityPolicy.requireStrongPassword ? "有効" : "無効"}です。`, zh: `当前策略由站点设置维护；新登录 JWT 会话有效期为 ${securityPolicy.sessionMaxAgeHours} 小时，middleware 与后台权限守卫都会按该时间强制过期。强密码策略${securityPolicy.requireStrongPassword ? "已启用" : "未启用"}。`, en: `The current policy is maintained in Site Settings. New JWT sessions are valid for ${securityPolicy.sessionMaxAgeHours} hours and enforced by middleware and admin permission guards. Strong password policy is ${securityPolicy.requireStrongPassword ? "enabled" : "disabled"}.` })}
+            {t({ ja: `現在のポリシーはサイト設定で管理されます。新しい JWT セッションは ${securityPolicy.sessionMaxAgeHours} 時間有効で、middleware と管理画面権限ガードで強制期限切れになります。強力なパスワードポリシーは${securityPolicy.requireStrongPassword ? "有効" : "無効"}です。`, zh: `当前策略由站点设置维护；新登录 JWT 会话有效期为 ${securityPolicy.sessionMaxAgeHours} 小时，middleware 与后台权限守卫都会按该时间强制过期。强密码策略${securityPolicy.requireStrongPassword ? "已启用" : "未启用"}。`, en: `The current policy is maintained in Site Settings. New JWT sessions are valid for ${securityPolicy.sessionMaxAgeHours} hours and enforced by middleware and admin permission guards. Strong password policy is ${securityPolicy.requireStrongPassword ? "enabled" : "disabled"}.` })}
           </p>
         </aside>
       </section>
@@ -187,7 +187,7 @@ export default async function AdminSecurityPage({
               <RefreshCcw aria-hidden size={18} className="text-[color:var(--gold-dark)]" />
               <h2 className="font-serif text-2xl font-light">{t("重新生成备用码")}</h2>
             </div>
-            <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "現在の認証アプリコードを入力すると新しい备用コード 8 個を生成し、旧コードはすぐ無効になります。", zh: "输入当前认证器验证码后生成 8 个新备用码，旧备用码会立即失效。", en: "Enter the current authenticator code to generate 8 new backup codes. Old codes are immediately invalidated." })}</p>
+            <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "現在の認証アプリコードを入力すると新しいバックアップコード 8 個を生成し、旧コードはすぐ無効になります。", zh: "输入当前认证器验证码后生成 8 个新备用码，旧备用码会立即失效。", en: "Enter the current authenticator code to generate 8 new backup codes. Old codes are immediately invalidated." })}</p>
             <input name="totpCode" inputMode="numeric" autoComplete="one-time-code" required className="mt-4 h-12 w-full min-w-0 border border-[color:var(--border)] bg-[color:var(--ivory)] px-4 text-base outline-none" placeholder={t("6 位验证码")} />
             <button className="mt-3 min-h-12 border border-[color:var(--gold)] px-5 text-sm tracking-[0.14em] text-[color:var(--gold-dark)]" type="submit">
               {t("重新生成")}
@@ -199,7 +199,7 @@ export default async function AdminSecurityPage({
               <ShieldOff aria-hidden size={18} className="text-[color:var(--red-seal)]" />
               <h2 className="font-serif text-2xl font-light">{t("关闭二步验证")}</h2>
             </div>
-            <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "無効化には認証アプリコードまたは备用コードが必要です。無効化後はメールとパスワードのみでログインします。", zh: "关闭前需要输入认证器验证码或一个备用码。关闭后登录只校验邮箱和密码。", en: "Disabling requires an authenticator code or backup code. After disabling, login only checks email and password." })}</p>
+            <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "無効化には認証アプリコードまたはバックアップコードが必要です。無効化後はメールとパスワードのみでログインします。", zh: "关闭前需要输入认证器验证码或一个备用码。关闭后登录只校验邮箱和密码。", en: "Disabling requires an authenticator code or backup code. After disabling, login only checks email and password." })}</p>
             <input name="totpCode" inputMode="numeric" autoComplete="one-time-code" required className="mt-4 h-12 w-full min-w-0 border border-[color:var(--border)] bg-white px-4 text-base outline-none" placeholder={t("6 位验证码或备用码")} />
             <button className="mt-3 min-h-12 border border-[color:var(--red-seal)] px-5 text-sm tracking-[0.14em] text-[color:var(--red-seal)]" type="submit">
               {t("关闭 TOTP")}

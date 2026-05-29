@@ -189,7 +189,7 @@ export default async function AdminSettingsPage({
       ) : null}
 
       <form action={canWrite ? saveSiteSettingsAction : undefined}>
-        <Section icon={Settings2} title={t("公司基础信息")} description={t({ ja: "前台フッター、About ブロック、ローカルビジネス構造化データ、后台ブランド表示に使用します。", zh: "用于前台页脚、关于区块、本地商家结构化数据和后台品牌识别。", en: "Used for the frontend footer, About blocks, local business structured data, and admin branding." })}>
+        <Section icon={Settings2} title={t("公司基础信息")} description={t({ ja: "フロントサイトのフッター、About ブロック、ローカルビジネス構造化データ、管理画面ブランド表示に使用します。", zh: "用于前台页脚、关于区块、本地商家结构化数据和后台品牌识别。", en: "Used for the frontend footer, About blocks, local business structured data, and admin branding." })}>
           <LocalizedFields label={t("品牌名")} name="company.name" value={settings.company.name} disabled={!canWrite} />
           <LocalizedFields label={t("法人名称")} name="company.legalName" value={settings.company.legalName} disabled={!canWrite} />
           <LocalizedFields label={t("品牌标语")} name="company.tagline" value={settings.company.tagline} disabled={!canWrite} />
@@ -228,7 +228,7 @@ export default async function AdminSettingsPage({
           <TextArea label={t("重定向规则（from => to，一行一个）")} name="seo.redirectRules" defaultValue={settings.seo.redirectRules} disabled={!canWrite} rows={4} />
         </Section>
 
-        <Section icon={Globe2} title="Robots / Sitemap" description={t({ ja: "/robots.txt と /sitemap.xml の出力を制御します。デフォルトで検索エンジンの后台クロールを禁止します。", zh: "控制 /robots.txt 与 /sitemap.xml 输出，默认禁止搜索引擎抓取后台路径。", en: "Controls /robots.txt and /sitemap.xml output. By default, search engines are blocked from crawling admin paths." })}>
+        <Section icon={Globe2} title="Robots / Sitemap" description={t({ ja: "/robots.txt と /sitemap.xml の出力を制御します。デフォルトで検索エンジンの管理画面クロールを禁止します。", zh: "控制 /robots.txt 与 /sitemap.xml 输出，默认禁止搜索引擎抓取后台路径。", en: "Controls /robots.txt and /sitemap.xml output. By default, search engines are blocked from crawling admin paths." })}>
           <div className="grid gap-3 md:grid-cols-2">
             <Toggle label={t("启用 robots.txt")} name="robots.enabled" defaultChecked={settings.robots.enabled} disabled={!canWrite} />
             <Toggle label={t("禁止 /admin")} name="robots.disallowAdmin" defaultChecked={settings.robots.disallowAdmin} disabled={!canWrite} />
@@ -242,7 +242,7 @@ export default async function AdminSettingsPage({
           </div>
         </Section>
 
-        <Section icon={LockKeyhole} title={t("登录安全策略")} description={t({ ja: "これらの値は后台ログインで読み込まれます。失敗ロックと二段階認証イベントは監査ログに記録されます。", zh: "这些参数会被后台登录流程读取；失败锁定和二步验证事件会继续写入审计日志。", en: "These values are used by admin login. Lockout and two-factor events continue to be written to audit logs." })}>
+        <Section icon={LockKeyhole} title={t("登录安全策略")} description={t({ ja: "これらの値は管理画面ログインで読み込まれます。失敗ロックと二段階認証イベントは監査ログに記録されます。", zh: "这些参数会被后台登录流程读取；失败锁定和二步验证事件会继续写入审计日志。", en: "These values are used by admin login. Lockout and two-factor events continue to be written to audit logs." })}>
           <div className="grid gap-4 md:grid-cols-3">
             <Field label={t("失败锁定阈值")} name="security.maxFailedLogins" defaultValue={settings.security.maxFailedLogins} disabled={!canWrite} type="number" />
             <Field label={t("锁定分钟数")} name="security.lockMinutes" defaultValue={settings.security.lockMinutes} disabled={!canWrite} type="number" />
@@ -250,7 +250,7 @@ export default async function AdminSettingsPage({
           </div>
           <div className="grid gap-3 md:grid-cols-2">
             <Toggle label={t("强密码策略")} name="security.requireStrongPassword" defaultChecked={settings.security.requireStrongPassword} disabled={!canWrite} help={t({ ja: "管理者パスワードの追加またはリセット時は引き続き 12 文字以上が必要です。", zh: "新增或重置管理员密码仍要求至少 12 位。", en: "New or reset admin passwords still require at least 12 characters." })} />
-            <Toggle label={t("要求 Admin 启用 TOTP")} name="security.requireTotpForAdmins" defaultChecked={settings.security.requireTotpForAdmins} disabled={!canWrite} help={t({ ja: "有効化すると、TOTP 未設定の super_admin/admin はログイン策略でブロックされ監査ログに記録されます。", zh: "启用后，super_admin/admin 未开启 TOTP 时会被登录策略阻断并写入审计日志。", en: "When enabled, super_admin/admin accounts without TOTP are blocked by login policy and recorded in audit logs." })} />
+            <Toggle label={t("要求 Admin 启用 TOTP")} name="security.requireTotpForAdmins" defaultChecked={settings.security.requireTotpForAdmins} disabled={!canWrite} help={t({ ja: "有効化すると、TOTP 未設定の super_admin/admin はログインポリシーでブロックされ監査ログに記録されます。", zh: "启用后，super_admin/admin 未开启 TOTP 时会被登录策略阻断并写入审计日志。", en: "When enabled, super_admin/admin accounts without TOTP are blocked by login policy and recorded in audit logs." })} />
           </div>
         </Section>
 

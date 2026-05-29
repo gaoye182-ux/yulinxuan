@@ -30,7 +30,7 @@ export default async function AdminLoginPage() {
           href={frontendHref}
           className="mt-6 block text-center text-sm text-[color:var(--muted)] hover:text-[color:var(--gold)]"
         >
-          {adminText({ ja: "前台へ戻る", zh: "返回前台", en: "Back to site" }, locale)}
+          {adminText({ ja: "サイトへ戻る", zh: "返回前台", en: "Back to site" }, locale)}
         </Link>
       </div>
     </div>

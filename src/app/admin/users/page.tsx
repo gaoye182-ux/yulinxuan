@@ -138,7 +138,7 @@ export default async function AdminUsersPage({
       {backupCodes.length ? (
         <section className="mt-8 border border-[color:var(--gold)] bg-[color:var(--paper)] p-5">
           <h2 className="font-serif text-2xl font-light">{t("备用码")}</h2>
-          <p className="mt-2 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "これらの备用コードは一度だけ表示されます。各コードはログイン成功後すぐ無効になります。", zh: "这些备用码只显示一次。每个备用码登录成功后会立即失效。", en: "These backup codes are shown only once. Each code is invalidated after successful login." })}</p>
+          <p className="mt-2 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "これらのバックアップコードは一度だけ表示されます。各コードはログイン成功後すぐ無効になります。", zh: "这些备用码只显示一次。每个备用码登录成功后会立即失效。", en: "These backup codes are shown only once. Each code is invalidated after successful login." })}</p>
           <div className="mt-4 grid gap-2 sm:grid-cols-2 md:grid-cols-4">
             {backupCodes.map((code) => (
               <code key={code} className="border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 py-2 text-center text-sm text-[color:var(--ink)]">
@@ -256,7 +256,7 @@ export default async function AdminUsersPage({
                   </span>
                   <p className="mt-1">
                     {user.totpEnabled
-                      ? t({ ja: `ログイン時にコードが必要です。备用コード残り ${user.totpBackupCodes.length} 個。`, zh: `登录时需要验证码；剩余备用码 ${user.totpBackupCodes.length} 个。`, en: `Code required at login; ${user.totpBackupCodes.length} backup codes remaining.` })
+                      ? t({ ja: `ログイン時にコードが必要です。バックアップコード残り ${user.totpBackupCodes.length} 個。`, zh: `登录时需要验证码；剩余备用码 ${user.totpBackupCodes.length} 个。`, en: `Code required at login; ${user.totpBackupCodes.length} backup codes remaining.` })
                       : user.totpSecret
                         ? t("已生成密钥，等待扫码校验启用。")
                         : t("未生成密钥。")}
