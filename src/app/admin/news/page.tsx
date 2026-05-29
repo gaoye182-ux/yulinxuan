@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AdminContentManager } from "@/components/admin-content-manager";
 import { AdminShell } from "@/components/admin-shell";
 import { requireAdmin } from "@/lib/admin-auth";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { getCmsContentEntries } from "@/lib/cms-content";
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 
 export default async function AdminNewsPage() {
   const session = await requireAdmin();
+  const locale = await getAdminLocale();
   const entries = await getCmsContentEntries("news", { admin: true });
   const readOnly = session?.user?.role === "viewer";
 
@@ -20,7 +22,7 @@ export default async function AdminNewsPage() {
       description="维护官网新着情報。支持公告、新入荷、活动、营业安排等类型，并预留定时发布、预览、SEO 与媒体库封面入口。"
       action={{ href: "/admin/news/new", label: "新增资讯" }}
     >
-      <AdminContentManager kind="news" entries={entries} readOnly={readOnly} />
+      <AdminContentManager kind="news" entries={entries} readOnly={readOnly} locale={locale} />
     </AdminShell>
   );
 }

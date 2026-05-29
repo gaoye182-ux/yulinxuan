@@ -4,6 +4,8 @@ import { adminMediaAlt } from "@/lib/admin-media";
 import { AdminPageBlocksManager } from "@/components/admin-page-blocks-manager";
 import { AdminShell } from "@/components/admin-shell";
 import { requireAdmin } from "@/lib/admin-auth";
+import { adminText, type AdminText } from "@/lib/admin-i18n";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { getPageBlocksForAdmin } from "@/lib/page-blocks";
 import { prisma } from "@/lib/prisma";
 
@@ -15,6 +17,8 @@ export const metadata: Metadata = {
 export default async function AdminPagesPage() {
   noStore();
   const session = await requireAdmin();
+  const locale = await getAdminLocale();
+  const t = (value: AdminText) => adminText(value, locale);
   const readOnly = session.user.role === "viewer";
   const [rows, mediaRows] = await Promise.all([
     getPageBlocksForAdmin(),
@@ -48,10 +52,10 @@ export default async function AdminPagesPage() {
     >
       {readOnly ? (
         <p className="mt-8 border border-[color:var(--border)] bg-[color:var(--paper)] px-4 py-3 text-sm text-[color:var(--muted)]">
-          Viewer 账号为只读模式，可以查看模块内容但不能保存。
+          {t({ ja: "Viewer は読み取り専用です。モジュール内容は確認できますが保存はできません。", zh: "Viewer 账号为只读模式，可以查看模块内容但不能保存。", en: "Viewer is read-only. You can view page blocks but cannot save them." })}
         </p>
       ) : null}
-      <AdminPageBlocksManager rows={clientRows} media={media} readOnly={readOnly} />
+      <AdminPageBlocksManager rows={clientRows} media={media} readOnly={readOnly} locale={locale} />
     </AdminShell>
   );
 }

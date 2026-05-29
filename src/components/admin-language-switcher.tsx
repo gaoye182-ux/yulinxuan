@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { ChevronDown } from "lucide-react";
 import { setAdminLocaleAction } from "@/lib/admin-locale-actions";
 import { adminLocaleLabels, type AdminLocale } from "@/lib/admin-i18n";
 import { languages } from "@/lib/i18n";
@@ -22,22 +23,25 @@ export function AdminLanguageSwitcher({ activeLocale }: AdminLanguageSwitcherPro
   }
 
   return (
-    <div className="inline-flex min-h-11 overflow-hidden border border-[color:var(--border)] bg-[color:var(--ivory)]">
-      {languages.map((locale) => (
-        <button
-          key={locale}
-          type="button"
-          disabled={isPending}
-          onClick={() => switchLocale(locale)}
-          className={`px-3 text-xs tracking-[0.12em] transition ${
-            activeLocale === locale
-              ? "bg-[color:var(--gold)] text-white"
-              : "text-[color:var(--muted)] hover:bg-white hover:text-[color:var(--gold-dark)]"
-          }`}
-        >
-          {adminLocaleLabels[locale]}
-        </button>
-      ))}
+    <div className="relative">
+      <select
+        value={activeLocale}
+        disabled={isPending}
+        aria-label="Admin language"
+        onChange={(event) => switchLocale(event.target.value as AdminLocale)}
+        className="h-11 min-w-36 appearance-none border border-[color:var(--border)] bg-[color:var(--ivory)] pl-3 pr-9 text-sm text-[color:var(--ink)] outline-none transition hover:border-[color:var(--gold)] disabled:opacity-60"
+      >
+        {languages.map((locale) => (
+          <option key={locale} value={locale}>
+            {adminLocaleLabels[locale]}
+          </option>
+        ))}
+      </select>
+      <ChevronDown
+        aria-hidden
+        size={15}
+        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[color:var(--gold-dark)]"
+      />
     </div>
   );
 }

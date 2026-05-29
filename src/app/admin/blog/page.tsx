@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AdminContentManager } from "@/components/admin-content-manager";
 import { AdminShell } from "@/components/admin-shell";
 import { requireAdmin } from "@/lib/admin-auth";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { getCmsContentEntries } from "@/lib/cms-content";
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 
 export default async function AdminBlogPage() {
   const session = await requireAdmin();
+  const locale = await getAdminLocale();
   const entries = await getCmsContentEntries("blog", { admin: true });
   const readOnly = session?.user?.role === "viewer";
 
@@ -20,7 +22,7 @@ export default async function AdminBlogPage() {
       description="维护鉴定师博客文章。支持 JA / ZH / EN 三语标题、摘要、富文本正文、分类、标签、封面、发布状态和 SEO 设置。"
       action={{ href: "/admin/blog/new", label: "新增博客" }}
     >
-      <AdminContentManager kind="blog" entries={entries} readOnly={readOnly} />
+      <AdminContentManager kind="blog" entries={entries} readOnly={readOnly} locale={locale} />
     </AdminShell>
   );
 }

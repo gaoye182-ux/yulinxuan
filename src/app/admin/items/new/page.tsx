@@ -3,6 +3,7 @@ import { AdminItemForm } from "@/components/admin-item-form";
 import { AdminShell } from "@/components/admin-shell";
 import { adminMediaAlt } from "@/lib/admin-media";
 import { requireContentEditor } from "@/lib/admin-auth";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ function localized(value: unknown) {
 
 export default async function AdminItemNewPage() {
   await requireContentEditor();
+  const locale = await getAdminLocale();
   const [categoryRows, mediaRows] = await Promise.all([
     prisma.category.findMany({
       where: { isActive: true },
@@ -40,7 +42,7 @@ export default async function AdminItemNewPage() {
       title="新增藏品"
       description="创建三语藏品记录，设置分类、价格显示、发布状态、推荐标记和媒体库图片。"
     >
-      <AdminItemForm mode="new" categories={categories} media={media} />
+      <AdminItemForm mode="new" categories={categories} media={media} locale={locale} />
     </AdminShell>
   );
 }

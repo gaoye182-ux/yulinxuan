@@ -4,6 +4,8 @@ import { unstable_noStore as noStore } from "next/cache";
 import type { Prisma } from "@prisma/client";
 import { AdminShell } from "@/components/admin-shell";
 import { requirePermission } from "@/lib/admin-auth";
+import { adminText, type AdminText } from "@/lib/admin-i18n";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
@@ -78,6 +80,8 @@ export default async function AdminAuditLogsPage({
 }) {
   noStore();
   await requirePermission("audit.read");
+  const locale = await getAdminLocale();
+  const t = (value: AdminText) => adminText(value, locale);
   const params = (await searchParams) ?? {};
   const page = Math.max(1, Number(params.page ?? 1) || 1);
   const action = params.action?.trim();
@@ -132,29 +136,29 @@ export default async function AdminAuditLogsPage({
     >
       <form className="mt-8 grid gap-3 border border-[color:var(--border)] bg-[color:var(--paper)] p-5 lg:grid-cols-[180px_180px_minmax(0,1fr)_150px_150px_auto]">
         <select name="action" defaultValue={action ?? ""} className="h-12 border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 text-sm outline-none">
-          <option value="">操作：全部</option>
+          <option value="">{t({ ja: "操作：すべて", zh: "操作：全部", en: "Action: all" })}</option>
           {actions.map((item) => (
-            <option key={item.action} value={item.action}>{actionLabels[item.action] ?? item.action}</option>
+            <option key={item.action} value={item.action}>{t(actionLabels[item.action] ?? item.action)}</option>
           ))}
         </select>
         <select name="targetType" defaultValue={targetType ?? ""} className="h-12 border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 text-sm outline-none">
-          <option value="">对象：全部</option>
+          <option value="">{t({ ja: "対象：すべて", zh: "对象：全部", en: "Target: all" })}</option>
           {targetTypes.filter((item) => item.targetType).map((item) => (
             <option key={item.targetType ?? ""} value={item.targetType ?? ""}>{item.targetType}</option>
           ))}
         </select>
-        <input name="user" defaultValue={user ?? ""} placeholder="管理员姓名 / 邮箱" className="h-12 min-w-0 border border-[color:var(--border)] bg-[color:var(--ivory)] px-4 text-base outline-none" />
+        <input name="user" defaultValue={user ?? ""} placeholder={t({ ja: "管理者名 / メール", zh: "管理员姓名 / 邮箱", en: "Admin name / email" })} className="h-12 min-w-0 border border-[color:var(--border)] bg-[color:var(--ivory)] px-4 text-base outline-none" />
         <input name="from" defaultValue={from ?? ""} type="date" className="h-12 border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 text-sm outline-none" />
         <input name="to" defaultValue={to ?? ""} type="date" className="h-12 border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 text-sm outline-none" />
         <button className="min-h-12 border border-[color:var(--gold)] bg-[color:var(--gold)] px-5 text-sm tracking-[0.14em] text-white">
-          筛选
+          {t("筛选")}
         </button>
       </form>
 
       <section className="mt-6 overflow-hidden border border-[color:var(--border)] bg-[color:var(--paper)]">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[color:var(--border)] p-5">
-          <h2 className="font-serif text-2xl font-light">日志记录</h2>
-          <p className="text-sm text-[color:var(--muted)]">共 {total} 条，第 {page} / {pageCount} 页</p>
+          <h2 className="font-serif text-2xl font-light">{t({ ja: "ログ記録", zh: "日志记录", en: "Log Records" })}</h2>
+          <p className="text-sm text-[color:var(--muted)]">{t({ ja: `全 ${total} 件、${page} / ${pageCount} ページ`, zh: `共 ${total} 条，第 ${page} / ${pageCount} 页`, en: `${total} total, page ${page} / ${pageCount}` })}</p>
         </div>
         <div className="grid gap-0">
           {logs.length ? (
@@ -165,16 +169,16 @@ export default async function AdminAuditLogsPage({
                   <p className="mt-2 text-sm text-[color:var(--muted)]">{formatDate(log.createdAt)}</p>
                 </div>
                 <div className="min-w-0">
-                  <p className="break-words font-serif text-2xl font-light">{actionLabels[log.action] ?? log.action}</p>
+                  <p className="break-words font-serif text-2xl font-light">{t(actionLabels[log.action] ?? log.action)}</p>
                   <p className="mt-2 break-words text-sm text-[color:var(--muted)]">
-                    {log.adminUser?.name ?? log.adminUser?.email ?? "系统/未知用户"}
+                    {log.adminUser?.name ?? log.adminUser?.email ?? t({ ja: "システム / 不明ユーザー", zh: "系统/未知用户", en: "System / unknown user" })}
                     {log.targetType ? ` · ${log.targetType}` : ""}
                     {log.targetId ? ` #${log.targetId}` : ""}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs text-[color:var(--gold-dark)]">IP</p>
-                  <p className="mt-2 break-words text-sm text-[color:var(--muted)]">{log.ipAddress ?? "未记录"}</p>
+                  <p className="mt-2 break-words text-sm text-[color:var(--muted)]">{log.ipAddress ?? t("未记录")}</p>
                 </div>
                 <div>
                   <p className="text-xs text-[color:var(--gold-dark)]">Role</p>
@@ -183,7 +187,7 @@ export default async function AdminAuditLogsPage({
               </article>
             ))
           ) : (
-            <p className="p-6 text-sm text-[color:var(--muted)]">暂无符合筛选条件的审计日志。</p>
+            <p className="p-6 text-sm text-[color:var(--muted)]">{t({ ja: "条件に一致する監査ログはありません。", zh: "暂无符合筛选条件的审计日志。", en: "No matching audit logs." })}</p>
           )}
         </div>
       </section>
@@ -193,13 +197,13 @@ export default async function AdminAuditLogsPage({
           href={pageHref(params, Math.max(1, page - 1))}
           className={`min-h-11 border border-[color:var(--border)] px-4 py-3 text-sm ${page <= 1 ? "pointer-events-none opacity-50" : "text-[color:var(--gold-dark)]"}`}
         >
-          上一页
+          {t("上一页")}
         </Link>
         <Link
           href={pageHref(params, Math.min(pageCount, page + 1))}
           className={`min-h-11 border border-[color:var(--border)] px-4 py-3 text-sm ${page >= pageCount ? "pointer-events-none opacity-50" : "text-[color:var(--gold-dark)]"}`}
         >
-          下一页
+          {t("下一页")}
         </Link>
       </nav>
     </AdminShell>

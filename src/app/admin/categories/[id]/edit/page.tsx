@@ -4,6 +4,7 @@ import { AdminCategoryForm } from "@/components/admin-category-form";
 import { AdminShell } from "@/components/admin-shell";
 import { adminMediaAlt } from "@/lib/admin-media";
 import { requireContentEditor } from "@/lib/admin-auth";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default async function AdminCategoryEditPage({
   params: Promise<{ id: string }>;
 }) {
   await requireContentEditor();
+  const locale = await getAdminLocale();
   const { id } = await params;
   const categoryId = BigInt(id);
   const [category, categoryRows, mediaRows] = await Promise.all([
@@ -79,7 +81,7 @@ export default async function AdminCategoryEditPage({
       title="编辑分类"
       description="更新分类三语内容、父级、封面图、排序、启用状态和首页展示。"
     >
-      <AdminCategoryForm mode="edit" category={formCategory} categories={categories} media={media} />
+      <AdminCategoryForm mode="edit" category={formCategory} categories={categories} media={media} locale={locale} />
     </AdminShell>
   );
 }

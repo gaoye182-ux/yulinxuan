@@ -6,6 +6,8 @@ import { AdminShell } from "@/components/admin-shell";
 import { cleanupUnusedMediaAction, createMediaFromUrlAction, deleteMediaAction, getMediaReferenceCount, replaceMediaFileAction, updateMediaAltAction, uploadMediaAction } from "@/lib/media-actions";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin-auth";
+import { adminText, type AdminText } from "@/lib/admin-i18n";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { languages } from "@/lib/i18n";
 
 export const metadata: Metadata = {
@@ -30,6 +32,8 @@ export default async function AdminMediaPage({
 }) {
   noStore();
   const session = await requireAdmin();
+  const locale = await getAdminLocale();
+  const t = (value: AdminText) => adminText(value, locale);
   const readOnly = session.user.role === "viewer";
   const { q = "" } = await searchParams;
   const query = q.trim();
@@ -63,10 +67,10 @@ export default async function AdminMediaPage({
         <form action={uploadMediaAction} className="mt-8 grid gap-5 border border-[color:var(--border)] bg-[color:var(--paper)] p-5">
           <div className="flex items-center gap-3">
             <FileImage aria-hidden size={18} className="text-[color:var(--gold-dark)]" />
-            <h2 className="font-serif text-2xl font-light">上传图片</h2>
+            <h2 className="font-serif text-2xl font-light">{t("上传图片")}</h2>
           </div>
           <label className="block min-w-0">
-            <span className="text-sm text-[color:var(--muted)]">图片文件（JPG / PNG / WebP / HEIC，最大 5MB）</span>
+            <span className="text-sm text-[color:var(--muted)]">{t({ ja: "画像ファイル（JPG / PNG / WebP / HEIC、最大 5MB）", zh: "图片文件（JPG / PNG / WebP / HEIC，最大 5MB）", en: "Image file (JPG / PNG / WebP / HEIC, max 5MB)" })}</span>
             <input name="file" type="file" required accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif" className="mt-2 w-full border border-[color:var(--border)] bg-[color:var(--ivory)] px-4 py-3 text-base outline-none file:mr-4 file:min-h-10 file:border-0 file:bg-[color:var(--gold)] file:px-4 file:text-sm file:text-white focus:border-[color:var(--gold)]" />
           </label>
           <div className="grid gap-4 md:grid-cols-3">
@@ -79,12 +83,12 @@ export default async function AdminMediaPage({
           </div>
           <button className="inline-flex min-h-12 w-fit items-center justify-center gap-2 border border-[color:var(--gold)] bg-[color:var(--gold)] px-5 text-sm tracking-[0.14em] text-white">
             <Plus aria-hidden size={16} />
-            上传并生成 WebP
+            {t({ ja: "アップロードして WebP を生成", zh: "上传并生成 WebP", en: "Upload and Generate WebP" })}
           </button>
         </form>
       ) : (
         <p className="mt-8 border border-[color:var(--border)] bg-[color:var(--paper)] px-4 py-3 text-sm text-[color:var(--muted)]">
-          Viewer 账号为只读模式，不能上传新媒体。
+          {t({ ja: "Viewer アカウントは読み取り専用のため、新しいメディアをアップロードできません。", zh: "Viewer 账号为只读模式，不能上传新媒体。", en: "Viewer accounts are read-only and cannot upload new media." })}
         </p>
       )}
 
@@ -92,7 +96,7 @@ export default async function AdminMediaPage({
         <form action={createMediaFromUrlAction} className="mt-5 grid gap-5 border border-[color:var(--border)] bg-[color:var(--paper)] p-5">
           <div className="flex items-center gap-3">
             <LinkIcon aria-hidden size={16} />
-            <h2 className="font-serif text-2xl font-light">登记外部 URL</h2>
+            <h2 className="font-serif text-2xl font-light">{t({ ja: "外部 URL を登録", zh: "登记外部 URL", en: "Register External URL" })}</h2>
           </div>
           <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px_180px]">
             <label className="block min-w-0">
@@ -110,23 +114,23 @@ export default async function AdminMediaPage({
           </div>
           <button className="inline-flex min-h-12 w-fit items-center justify-center gap-2 border border-[color:var(--gold)] px-5 text-sm tracking-[0.14em] text-[color:var(--gold-dark)]">
             <LinkIcon aria-hidden size={16} />
-            保存 URL
+            {t({ ja: "URL を保存", zh: "保存 URL", en: "Save URL" })}
           </button>
         </form>
       ) : null}
 
       <form className="mt-8 flex min-h-12 items-center gap-3 border border-[color:var(--border)] bg-[color:var(--paper)] px-4">
         <Search aria-hidden size={17} className="shrink-0 text-[color:var(--gold-dark)]" />
-        <input name="q" defaultValue={query} placeholder="搜索文件名、URL" className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-[color:var(--muted)]/70" />
-        <button className="min-h-10 border border-[color:var(--gold)] px-4 text-sm text-[color:var(--gold-dark)]">筛选</button>
+        <input name="q" defaultValue={query} placeholder={t({ ja: "ファイル名・URL を検索", zh: "搜索文件名、URL", en: "Search filename or URL" })} className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-[color:var(--muted)]/70" />
+        <button className="min-h-10 border border-[color:var(--gold)] px-4 text-sm text-[color:var(--gold-dark)]">{t("筛选")}</button>
       </form>
 
       {!readOnly ? (
         <form action={cleanupUnusedMediaAction} className="mt-4 border border-[color:var(--border)] bg-[color:var(--paper)] p-4">
           <button className="min-h-11 border border-[color:var(--red-seal)] px-4 text-sm text-[color:var(--red-seal)]">
-            清理未使用媒体
+            {t({ ja: "未使用メディアを削除", zh: "清理未使用媒体", en: "Clean Unused Media" })}
           </button>
-          <p className="mt-2 text-xs leading-5 text-[color:var(--muted)]">只删除引用数为 0 的媒体记录和本地上传文件；被藏品、分类、页面模块、博客或资讯引用的媒体会保留。</p>
+          <p className="mt-2 text-xs leading-5 text-[color:var(--muted)]">{t({ ja: "参照数が 0 のメディア記録とローカルアップロードファイルのみ削除します。蔵品、分類、ページモジュール、ブログ、新着情報で参照されているメディアは保持されます。", zh: "只删除引用数为 0 的媒体记录和本地上传文件；被藏品、分类、页面模块、博客或资讯引用的媒体会保留。", en: "Only media records and local uploads with zero references are deleted. Media referenced by items, categories, page blocks, blog, or news is retained." })}</p>
         </form>
       ) : null}
 
@@ -177,10 +181,10 @@ export default async function AdminMediaPage({
                 })}
                 {!readOnly ? (
                   <div className="flex flex-wrap gap-2">
-                    <button className="min-h-10 flex-1 border border-[color:var(--gold)] px-3 text-sm text-[color:var(--gold-dark)]">保存 alt</button>
+                    <button className="min-h-10 flex-1 border border-[color:var(--gold)] px-3 text-sm text-[color:var(--gold-dark)]">{t({ ja: "alt を保存", zh: "保存 alt", en: "Save Alt" })}</button>
                     <button formAction={deleteMediaAction} className="inline-flex min-h-10 items-center justify-center gap-2 border border-[color:var(--red-seal)] px-3 text-sm text-[color:var(--red-seal)]">
                       <Trash2 size={15} />
-                      删除
+                      {t("删除")}
                     </button>
                   </div>
                 ) : null}
@@ -189,17 +193,17 @@ export default async function AdminMediaPage({
                 <form action={replaceMediaFileAction} className="mt-4 grid gap-3 border-t border-[color:var(--border)] pt-4">
                   <input type="hidden" name="id" value={item.id.toString()} />
                   <label className="block min-w-0">
-                    <span className="text-xs text-[color:var(--muted)]">替换图片并保持当前 URL</span>
+                    <span className="text-xs text-[color:var(--muted)]">{t({ ja: "現在の URL を維持して画像を差し替え", zh: "替换图片并保持当前 URL", en: "Replace image while keeping current URL" })}</span>
                     <input name="file" type="file" required accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.heic,.heif" className="mt-1 w-full border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 py-2 text-sm file:mr-3 file:border-0 file:bg-[color:var(--gold)] file:px-3 file:py-2 file:text-white" />
                   </label>
-                  <button className="min-h-10 border border-[color:var(--gold)] px-3 text-sm text-[color:var(--gold-dark)]">替换文件</button>
+                  <button className="min-h-10 border border-[color:var(--gold)] px-3 text-sm text-[color:var(--gold-dark)]">{t({ ja: "ファイルを差し替え", zh: "替换文件", en: "Replace File" })}</button>
                 </form>
               ) : null}
             </article>
           ))
         ) : (
           <p className="border border-[color:var(--border)] bg-[color:var(--paper)] p-6 text-sm text-[color:var(--muted)] md:col-span-2 xl:col-span-3">
-            暂无媒体记录。登记 URL 后可用于 Blog / News 的封面或 OGP 图片。
+            {t({ ja: "メディア記録はまだありません。URL 登録後は Blog / News のカバーや OGP 画像に利用できます。", zh: "暂无媒体记录。登记 URL 后可用于 Blog / News 的封面或 OGP 图片。", en: "No media records yet. Registered URLs can be used for Blog / News covers or OGP images." })}
           </p>
         )}
       </section>

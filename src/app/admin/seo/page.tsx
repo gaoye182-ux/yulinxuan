@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Globe2, Save, Search } from "lucide-react";
 import { AdminShell } from "@/components/admin-shell";
 import { requirePermission } from "@/lib/admin-auth";
+import { adminText, type AdminText } from "@/lib/admin-i18n";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { saveSeoSettingsAction } from "@/lib/seo-actions";
 import { getSiteSettings } from "@/lib/site-settings";
 import { languages } from "@/lib/i18n";
@@ -67,6 +69,8 @@ export default async function AdminSeoPage({
 }) {
   noStore();
   const session = await requirePermission("settings.read");
+  const locale = await getAdminLocale();
+  const t = (value: AdminText) => adminText(value, locale);
   const canWrite = session.user.role === "super_admin";
   const params = await searchParams;
   const settings = await getSiteSettings();
@@ -74,7 +78,7 @@ export default async function AdminSeoPage({
   return (
     <AdminShell title="SEO 管理" description="集中维护全站默认 Meta、OGP、canonical、多语言索引策略、robots.txt、sitemap.xml 与部署前重定向清单。">
       {params?.notice === "SeoSaved" ? (
-        <p className="mt-8 border border-[color:var(--gold)] bg-[rgba(176,141,87,0.08)] px-4 py-3 text-sm text-[color:var(--gold-dark)]">SEO 配置已保存。</p>
+        <p className="mt-8 border border-[color:var(--gold)] bg-[rgba(176,141,87,0.08)] px-4 py-3 text-sm text-[color:var(--gold-dark)]">{t({ ja: "SEO 設定を保存しました。", zh: "SEO 配置已保存。", en: "SEO settings saved." })}</p>
       ) : null}
 
       <form action={saveSeoSettingsAction} className="mt-8 grid gap-6">
@@ -83,14 +87,14 @@ export default async function AdminSeoPage({
             <Search aria-hidden size={18} className="text-[color:var(--gold-dark)]" />
             <h2 className="font-serif text-2xl font-light">Meta / OGP / Canonical</h2>
           </div>
-          <LocalizedFields label="默认 Meta Title" name="seo.defaultTitle" value={settings.seo.defaultTitle} disabled={!canWrite} />
-          <LocalizedFields label="默认 Meta Description" name="seo.defaultDescription" value={settings.seo.defaultDescription} multiline disabled={!canWrite} />
-          <LocalizedFields label="默认 Keywords" name="seo.defaultKeywords" value={settings.seo.defaultKeywords} disabled={!canWrite} />
+          <LocalizedFields label={t({ ja: "デフォルト Meta Title", zh: "默认 Meta Title", en: "Default Meta Title" })} name="seo.defaultTitle" value={settings.seo.defaultTitle} disabled={!canWrite} />
+          <LocalizedFields label={t({ ja: "デフォルト Meta Description", zh: "默认 Meta Description", en: "Default Meta Description" })} name="seo.defaultDescription" value={settings.seo.defaultDescription} multiline disabled={!canWrite} />
+          <LocalizedFields label={t({ ja: "デフォルト Keywords", zh: "默认 Keywords", en: "Default Keywords" })} name="seo.defaultKeywords" value={settings.seo.defaultKeywords} disabled={!canWrite} />
           <div className="grid gap-4 md:grid-cols-2">
-            <Field label="OGP 默认图片 URL" name="seo.ogImage" defaultValue={settings.seo.ogImage} disabled={!canWrite} />
+            <Field label={t({ ja: "OGP デフォルト画像 URL", zh: "OGP 默认图片 URL", en: "Default OGP Image URL" })} name="seo.ogImage" defaultValue={settings.seo.ogImage} disabled={!canWrite} />
             <Field label="Canonical Base URL" name="seo.canonicalBaseUrl" defaultValue={settings.seo.canonicalBaseUrl} disabled={!canWrite} />
           </div>
-          <Toggle label="Canonical URL 使用尾斜杠" name="seo.canonicalTrailingSlash" defaultChecked={settings.seo.canonicalTrailingSlash} disabled={!canWrite} />
+          <Toggle label={t({ ja: "Canonical URL に末尾スラッシュを使用", zh: "Canonical URL 使用尾斜杠", en: "Use trailing slash for canonical URLs" })} name="seo.canonicalTrailingSlash" defaultChecked={settings.seo.canonicalTrailingSlash} disabled={!canWrite} />
         </section>
 
         <section className="grid gap-5 border border-[color:var(--border)] bg-[color:var(--paper)] p-5">
@@ -98,18 +102,18 @@ export default async function AdminSeoPage({
             <Globe2 aria-hidden size={18} className="text-[color:var(--gold-dark)]" />
             <h2 className="font-serif text-2xl font-light">Index / Robots / Sitemap</h2>
           </div>
-          <TextArea label="Noindex 路径（一行一个，支持 /path/*）" name="seo.noindexPaths" defaultValue={settings.seo.noindexPaths} rows={5} disabled={!canWrite} />
-          <TextArea label="重定向清单（from => to，一行一个，部署时转入 next.config 或边缘规则）" name="seo.redirectRules" defaultValue={settings.seo.redirectRules} rows={5} disabled={!canWrite} />
+          <TextArea label={t({ ja: "Noindex パス（1 行に 1 つ、/path/* 対応）", zh: "Noindex 路径（一行一个，支持 /path/*）", en: "Noindex paths (one per line, supports /path/*)" })} name="seo.noindexPaths" defaultValue={settings.seo.noindexPaths} rows={5} disabled={!canWrite} />
+          <TextArea label={t({ ja: "リダイレクト一覧（from => to、1 行に 1 つ）", zh: "重定向清单（from => to，一行一个，部署时转入 next.config 或边缘规则）", en: "Redirect list (from => to, one per line)" })} name="seo.redirectRules" defaultValue={settings.seo.redirectRules} rows={5} disabled={!canWrite} />
           <div className="grid gap-3 md:grid-cols-2">
-            <Toggle label="启用 robots.txt" name="robots.enabled" defaultChecked={settings.robots.enabled} disabled={!canWrite} />
-            <Toggle label="robots 默认禁止 /admin" name="robots.disallowAdmin" defaultChecked={settings.robots.disallowAdmin} disabled={!canWrite} />
+            <Toggle label={t({ ja: "robots.txt を有効化", zh: "启用 robots.txt", en: "Enable robots.txt" })} name="robots.enabled" defaultChecked={settings.robots.enabled} disabled={!canWrite} />
+            <Toggle label={t({ ja: "robots で /admin を禁止", zh: "robots 默认禁止 /admin", en: "Disallow /admin in robots" })} name="robots.disallowAdmin" defaultChecked={settings.robots.disallowAdmin} disabled={!canWrite} />
           </div>
-          <TextArea label="robots.txt 内容" name="robots.rules" defaultValue={settings.robots.rules} rows={7} disabled={!canWrite} />
+          <TextArea label={t({ ja: "robots.txt 内容", zh: "robots.txt 内容", en: "robots.txt content" })} name="robots.rules" defaultValue={settings.robots.rules} rows={7} disabled={!canWrite} />
           <div className="grid gap-3 md:grid-cols-4">
-            <Toggle label="启用 sitemap.xml" name="sitemap.enabled" defaultChecked={settings.sitemap.enabled} disabled={!canWrite} />
-            <Toggle label="包含博客" name="sitemap.includeBlog" defaultChecked={settings.sitemap.includeBlog} disabled={!canWrite} />
-            <Toggle label="包含资讯" name="sitemap.includeNews" defaultChecked={settings.sitemap.includeNews} disabled={!canWrite} />
-            <Toggle label="包含藏品" name="sitemap.includeItems" defaultChecked={settings.sitemap.includeItems} disabled={!canWrite} />
+            <Toggle label={t({ ja: "sitemap.xml を有効化", zh: "启用 sitemap.xml", en: "Enable sitemap.xml" })} name="sitemap.enabled" defaultChecked={settings.sitemap.enabled} disabled={!canWrite} />
+            <Toggle label={t({ ja: "ブログを含める", zh: "包含博客", en: "Include blog" })} name="sitemap.includeBlog" defaultChecked={settings.sitemap.includeBlog} disabled={!canWrite} />
+            <Toggle label={t({ ja: "新着情報を含める", zh: "包含资讯", en: "Include news" })} name="sitemap.includeNews" defaultChecked={settings.sitemap.includeNews} disabled={!canWrite} />
+            <Toggle label={t({ ja: "蔵品を含める", zh: "包含藏品", en: "Include items" })} name="sitemap.includeItems" defaultChecked={settings.sitemap.includeItems} disabled={!canWrite} />
           </div>
         </section>
 
@@ -117,13 +121,13 @@ export default async function AdminSeoPage({
           {canWrite ? (
             <button className="inline-flex min-h-12 items-center gap-2 border border-[color:var(--gold)] bg-[color:var(--gold)] px-5 text-sm tracking-[0.14em] text-white">
               <Save aria-hidden size={16} />
-              保存 SEO 配置
+              {t({ ja: "SEO 設定を保存", zh: "保存 SEO 配置", en: "Save SEO Settings" })}
             </button>
           ) : (
-            <p className="border border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">只有 super_admin 可修改 SEO 系统配置。</p>
+            <p className="border border-[color:var(--border)] px-4 py-3 text-sm text-[color:var(--muted)]">{t({ ja: "SEO システム設定を変更できるのは super_admin のみです。", zh: "只有 super_admin 可修改 SEO 系统配置。", en: "Only super_admin can modify SEO system settings." })}</p>
           )}
-          <Link href="/sitemap.xml" className="inline-flex min-h-12 items-center border border-[color:var(--border)] px-5 text-sm text-[color:var(--gold-dark)]">查看 sitemap.xml</Link>
-          <Link href="/robots.txt" className="inline-flex min-h-12 items-center border border-[color:var(--border)] px-5 text-sm text-[color:var(--gold-dark)]">查看 robots.txt</Link>
+          <Link href="/sitemap.xml" className="inline-flex min-h-12 items-center border border-[color:var(--border)] px-5 text-sm text-[color:var(--gold-dark)]">{t({ ja: "sitemap.xml を見る", zh: "查看 sitemap.xml", en: "View sitemap.xml" })}</Link>
+          <Link href="/robots.txt" className="inline-flex min-h-12 items-center border border-[color:var(--border)] px-5 text-sm text-[color:var(--gold-dark)]">{t({ ja: "robots.txt を見る", zh: "查看 robots.txt", en: "View robots.txt" })}</Link>
         </div>
       </form>
     </AdminShell>

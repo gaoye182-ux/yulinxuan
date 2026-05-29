@@ -5,6 +5,8 @@ import QRCode from "qrcode";
 import { KeyRound, RefreshCcw, ShieldCheck, ShieldOff } from "lucide-react";
 import { AdminShell } from "@/components/admin-shell";
 import { auth } from "@/auth";
+import { adminText, type AdminLocale, type AdminText } from "@/lib/admin-i18n";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { prisma } from "@/lib/prisma";
 import { getLoginSecurityPolicy } from "@/lib/site-settings";
 import { createOtpAuthUri } from "@/lib/totp";
@@ -27,9 +29,9 @@ const noticeText: Record<string, string> = {
   BackupCodesRegenerated: "备用码已重新生成，旧备用码已全部失效。"
 };
 
-function formatDate(value: Date | null) {
+function formatDate(value: Date | null, locale: AdminLocale) {
   if (!value) {
-    return "未记录";
+    return adminText("未记录", locale);
   }
 
   return new Intl.DateTimeFormat("ja-JP", {
@@ -48,6 +50,8 @@ export default async function AdminSecurityPage({
 }) {
   noStore();
   const session = await auth();
+  const locale = await getAdminLocale();
+  const t = (value: AdminText) => adminText(value, locale);
   const params = (await searchParams) ?? {};
   const backupCodes = params.backupCodes?.split(",").filter(Boolean) ?? [];
   const securityPolicy = await getLoginSecurityPolicy();
@@ -78,18 +82,18 @@ export default async function AdminSecurityPage({
     >
       {params.error ? (
         <p className="mt-8 border border-[color:var(--red-seal)] bg-[#fff7f4] px-4 py-3 text-sm leading-6 text-[color:var(--red-seal)]">
-          {errorText[params.error] ?? "操作失败，请稍后再试。"}
+          {t(errorText[params.error] ?? "操作失败，请稍后再试。")}
         </p>
       ) : null}
       {params.notice ? (
         <p className="mt-8 border border-[color:var(--gold)] bg-[color:var(--paper)] px-4 py-3 text-sm leading-6 text-[color:var(--gold-dark)]">
-          {noticeText[params.notice] ?? "操作已完成。"}
+          {t(noticeText[params.notice] ?? "操作已完成。")}
         </p>
       ) : null}
       {backupCodes.length ? (
         <section className="mt-8 border border-[color:var(--gold)] bg-[color:var(--paper)] p-5">
-          <h2 className="font-serif text-2xl font-light">一次性备用码</h2>
-          <p className="mt-2 text-sm leading-7 text-[color:var(--muted)]">这些备用码只显示一次。请保存到密码管理器；每个备用码登录成功后会立即失效。</p>
+          <h2 className="font-serif text-2xl font-light">{t("一次性备用码")}</h2>
+          <p className="mt-2 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "これらの备用コードは一度だけ表示されます。パスワード管理ツールに保存してください。各コードはログイン成功後すぐ無効になります。", zh: "这些备用码只显示一次。请保存到密码管理器；每个备用码登录成功后会立即失效。", en: "These backup codes are shown only once. Save them in a password manager; each code is invalidated immediately after successful login." })}</p>
           <div className="mt-4 grid gap-2 sm:grid-cols-2 md:grid-cols-4">
             {backupCodes.map((code) => (
               <code key={code} className="border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 py-2 text-center text-sm text-[color:var(--ink)]">
@@ -104,24 +108,24 @@ export default async function AdminSecurityPage({
         <article className="min-w-0 border border-[color:var(--border)] bg-[color:var(--paper)] p-5">
           <div className="flex items-center gap-2">
             <ShieldCheck aria-hidden size={18} className="text-[color:var(--gold-dark)]" />
-            <h2 className="font-serif text-2xl font-light">TOTP 状态</h2>
+            <h2 className="font-serif text-2xl font-light">{t({ ja: "TOTP 状態", zh: "TOTP 状态", en: "TOTP Status" })}</h2>
           </div>
           <dl className="mt-5 grid gap-4 text-sm text-[color:var(--muted)] sm:grid-cols-2">
             <div className="border border-[color:var(--border)] bg-[color:var(--ivory)] p-4">
-              <dt className="text-xs text-[color:var(--gold-dark)]">账号</dt>
+              <dt className="text-xs text-[color:var(--gold-dark)]">{t("账号")}</dt>
               <dd className="mt-2 break-words">{user.email}</dd>
             </div>
             <div className="border border-[color:var(--border)] bg-[color:var(--ivory)] p-4">
-              <dt className="text-xs text-[color:var(--gold-dark)]">状态</dt>
-              <dd className="mt-2">{user.totpEnabled ? "已启用" : user.totpSecret ? "待验证启用" : "未启用"}</dd>
+              <dt className="text-xs text-[color:var(--gold-dark)]">{t("状态")}</dt>
+              <dd className="mt-2">{user.totpEnabled ? t("已启用") : user.totpSecret ? t("待验证启用") : t("未启用")}</dd>
             </div>
             <div className="border border-[color:var(--border)] bg-[color:var(--ivory)] p-4">
-              <dt className="text-xs text-[color:var(--gold-dark)]">验证时间</dt>
-              <dd className="mt-2">{formatDate(user.totpVerifiedAt)}</dd>
+              <dt className="text-xs text-[color:var(--gold-dark)]">{t("验证时间")}</dt>
+              <dd className="mt-2">{formatDate(user.totpVerifiedAt, locale)}</dd>
             </div>
             <div className="border border-[color:var(--border)] bg-[color:var(--ivory)] p-4">
-              <dt className="text-xs text-[color:var(--gold-dark)]">剩余备用码</dt>
-              <dd className="mt-2">{user.totpBackupCodes.length} 个</dd>
+              <dt className="text-xs text-[color:var(--gold-dark)]">{t("剩余备用码")}</dt>
+              <dd className="mt-2">{t({ ja: `${user.totpBackupCodes.length} 個`, zh: `${user.totpBackupCodes.length} 个`, en: `${user.totpBackupCodes.length}` })}</dd>
             </div>
           </dl>
 
@@ -129,19 +133,19 @@ export default async function AdminSecurityPage({
             <form action={startOwnTotpSetupAction} className="mt-5">
               <button className="inline-flex min-h-12 items-center gap-2 border border-[color:var(--gold)] bg-[color:var(--gold)] px-5 text-sm tracking-[0.14em] text-white" type="submit">
                 <KeyRound aria-hidden size={16} />
-                生成二维码
+                {t("生成二维码")}
               </button>
             </form>
           ) : null}
         </article>
 
         <aside className="border border-[color:var(--border)] bg-[color:var(--paper)] p-5">
-          <h2 className="font-serif text-2xl font-light">登录限制</h2>
+          <h2 className="font-serif text-2xl font-light">{t("登录限制")}</h2>
           <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">
-            密码或二步验证码连续失败 {securityPolicy.maxFailedLogins} 次后，账号会临时锁定 {securityPolicy.lockMinutes} 分钟。所有成功、失败、启用和关闭操作都会写入审计日志。
+            {t({ ja: `パスワードまたは二段階認証コードが連続 ${securityPolicy.maxFailedLogins} 回失敗すると、アカウントは ${securityPolicy.lockMinutes} 分間一時ロックされます。成功、失敗、有効化、無効化の操作はすべて監査ログに記録されます。`, zh: `密码或二步验证码连续失败 ${securityPolicy.maxFailedLogins} 次后，账号会临时锁定 ${securityPolicy.lockMinutes} 分钟。所有成功、失败、启用和关闭操作都会写入审计日志。`, en: `After ${securityPolicy.maxFailedLogins} consecutive password or two-factor failures, the account is locked for ${securityPolicy.lockMinutes} minutes. Successful, failed, enabled, and disabled actions are written to audit logs.` })}
           </p>
           <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">
-            当前策略由站点设置维护；新登录 JWT 会话有效期为 {securityPolicy.sessionMaxAgeHours} 小时，middleware 与后台权限守卫都会按该时间强制过期。强密码策略{securityPolicy.requireStrongPassword ? "已启用" : "未启用"}。
+            {t({ ja: `現在の策略はサイト設定で管理されます。新しい JWT セッションは ${securityPolicy.sessionMaxAgeHours} 時間有効で、middleware と后台権限ガードで強制期限切れになります。強パスワード策略は${securityPolicy.requireStrongPassword ? "有効" : "無効"}です。`, zh: `当前策略由站点设置维护；新登录 JWT 会话有效期为 ${securityPolicy.sessionMaxAgeHours} 小时，middleware 与后台权限守卫都会按该时间强制过期。强密码策略${securityPolicy.requireStrongPassword ? "已启用" : "未启用"}。`, en: `The current policy is maintained in Site Settings. New JWT sessions are valid for ${securityPolicy.sessionMaxAgeHours} hours and enforced by middleware and admin permission guards. Strong password policy is ${securityPolicy.requireStrongPassword ? "enabled" : "disabled"}.` })}
           </p>
         </aside>
       </section>
@@ -150,7 +154,7 @@ export default async function AdminSecurityPage({
         <section className="mt-8 border border-[color:var(--border)] bg-[color:var(--paper)] p-5">
           <div className="flex items-center gap-2">
             <KeyRound aria-hidden size={18} className="text-[color:var(--gold-dark)]" />
-            <h2 className="font-serif text-2xl font-light">{user.totpEnabled ? "认证器信息" : "启用 TOTP 二步验证"}</h2>
+            <h2 className="font-serif text-2xl font-light">{user.totpEnabled ? t("认证器信息") : t("启用 TOTP 二步验证")}</h2>
           </div>
           <div className="mt-5 grid gap-5 md:grid-cols-[236px_minmax(0,1fr)]">
             <div className="w-fit border border-[color:var(--border)] bg-white p-3">
@@ -158,16 +162,16 @@ export default async function AdminSecurityPage({
             </div>
             <div className="min-w-0">
               <p className="text-sm leading-7 text-[color:var(--muted)]">
-                使用 Google Authenticator、1Password、Microsoft Authenticator 等应用扫描二维码。无法扫码时，可手动复制 otpauth URI。
+                {t({ ja: "Google Authenticator、1Password、Microsoft Authenticator などのアプリで QR コードを読み取ってください。読み取れない場合は otpauth URI を手動でコピーできます。", zh: "使用 Google Authenticator、1Password、Microsoft Authenticator 等应用扫描二维码。无法扫码时，可手动复制 otpauth URI。", en: "Scan the QR code with Google Authenticator, 1Password, Microsoft Authenticator, or a similar app. If scanning fails, copy the otpauth URI manually." })}
               </p>
               <p className="mt-3 break-all border border-dashed border-[color:var(--border)] bg-[color:var(--ivory)] p-3 text-xs text-[color:var(--muted)]">
                 {otpAuthUri}
               </p>
               {!user.totpEnabled ? (
                 <form action={enableOwnTotpAction} className="mt-4 flex flex-wrap gap-3">
-                  <input name="totpCode" inputMode="numeric" autoComplete="one-time-code" required className="h-12 min-w-0 flex-1 border border-[color:var(--border)] bg-[color:var(--ivory)] px-4 text-base outline-none" placeholder="6 位验证码" />
+                  <input name="totpCode" inputMode="numeric" autoComplete="one-time-code" required className="h-12 min-w-0 flex-1 border border-[color:var(--border)] bg-[color:var(--ivory)] px-4 text-base outline-none" placeholder={t("6 位验证码")} />
                   <button className="min-h-12 border border-[color:var(--gold)] bg-[color:var(--gold)] px-5 text-sm tracking-[0.14em] text-white" type="submit">
-                    启用
+                    {t("启用")}
                   </button>
                 </form>
               ) : null}
@@ -181,24 +185,24 @@ export default async function AdminSecurityPage({
           <form action={regenerateOwnBackupCodesAction} className="border border-[color:var(--border)] bg-[color:var(--paper)] p-5">
             <div className="flex items-center gap-2">
               <RefreshCcw aria-hidden size={18} className="text-[color:var(--gold-dark)]" />
-              <h2 className="font-serif text-2xl font-light">重新生成备用码</h2>
+              <h2 className="font-serif text-2xl font-light">{t("重新生成备用码")}</h2>
             </div>
-            <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">输入当前认证器验证码后生成 8 个新备用码，旧备用码会立即失效。</p>
-            <input name="totpCode" inputMode="numeric" autoComplete="one-time-code" required className="mt-4 h-12 w-full min-w-0 border border-[color:var(--border)] bg-[color:var(--ivory)] px-4 text-base outline-none" placeholder="6 位验证码" />
+            <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "現在の認証アプリコードを入力すると新しい备用コード 8 個を生成し、旧コードはすぐ無効になります。", zh: "输入当前认证器验证码后生成 8 个新备用码，旧备用码会立即失效。", en: "Enter the current authenticator code to generate 8 new backup codes. Old codes are immediately invalidated." })}</p>
+            <input name="totpCode" inputMode="numeric" autoComplete="one-time-code" required className="mt-4 h-12 w-full min-w-0 border border-[color:var(--border)] bg-[color:var(--ivory)] px-4 text-base outline-none" placeholder={t("6 位验证码")} />
             <button className="mt-3 min-h-12 border border-[color:var(--gold)] px-5 text-sm tracking-[0.14em] text-[color:var(--gold-dark)]" type="submit">
-              重新生成
+              {t("重新生成")}
             </button>
           </form>
 
           <form action={disableOwnTotpAction} className="border border-[color:var(--red-seal)] bg-[#fffaf8] p-5">
             <div className="flex items-center gap-2">
               <ShieldOff aria-hidden size={18} className="text-[color:var(--red-seal)]" />
-              <h2 className="font-serif text-2xl font-light">关闭二步验证</h2>
+              <h2 className="font-serif text-2xl font-light">{t("关闭二步验证")}</h2>
             </div>
-            <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">关闭前需要输入认证器验证码或一个备用码。关闭后登录只校验邮箱和密码。</p>
-            <input name="totpCode" inputMode="numeric" autoComplete="one-time-code" required className="mt-4 h-12 w-full min-w-0 border border-[color:var(--border)] bg-white px-4 text-base outline-none" placeholder="6 位验证码或备用码" />
+            <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "無効化には認証アプリコードまたは备用コードが必要です。無効化後はメールとパスワードのみでログインします。", zh: "关闭前需要输入认证器验证码或一个备用码。关闭后登录只校验邮箱和密码。", en: "Disabling requires an authenticator code or backup code. After disabling, login only checks email and password." })}</p>
+            <input name="totpCode" inputMode="numeric" autoComplete="one-time-code" required className="mt-4 h-12 w-full min-w-0 border border-[color:var(--border)] bg-white px-4 text-base outline-none" placeholder={t("6 位验证码或备用码")} />
             <button className="mt-3 min-h-12 border border-[color:var(--red-seal)] px-5 text-sm tracking-[0.14em] text-[color:var(--red-seal)]" type="submit">
-              关闭 TOTP
+              {t("关闭 TOTP")}
             </button>
           </form>
         </section>

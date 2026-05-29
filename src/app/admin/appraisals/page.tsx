@@ -5,6 +5,8 @@ import type { Prisma, RequestStatus } from "@prisma/client";
 import { CalendarDays, Download, FileImage, Filter, Mail, MessageSquareReply, Phone, Search, ShieldAlert } from "lucide-react";
 import { AdminShell } from "@/components/admin-shell";
 import { requireAdmin } from "@/lib/admin-auth";
+import { adminText, type AdminText } from "@/lib/admin-i18n";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { updateAppraisalAction } from "@/lib/appraisal-actions";
 import { prisma } from "@/lib/prisma";
 
@@ -14,17 +16,17 @@ export const metadata: Metadata = {
 };
 
 const pageSize = 10;
-const statusOptions: { value: RequestStatus; label: string; tone: string }[] = [
-  { value: "unread", label: "未读", tone: "border-[color:var(--red-seal)] text-[color:var(--red-seal)]" },
-  { value: "in_progress", label: "处理中", tone: "border-[color:var(--gold)] text-[color:var(--gold-dark)]" },
-  { value: "replied", label: "已回复", tone: "border-[#758d6a] text-[#4f6d45]" },
-  { value: "completed", label: "已完成", tone: "border-[#607d8b] text-[#455a64]" },
-  { value: "rejected", label: "不采用", tone: "border-[color:var(--border)] text-[color:var(--muted)]" },
-  { value: "archived", label: "归档", tone: "border-[color:var(--border)] text-[color:var(--muted)]" }
+const statusOptions: { value: RequestStatus; label: AdminText; tone: string }[] = [
+  { value: "unread", label: { ja: "未読", zh: "未读", en: "Unread" }, tone: "border-[color:var(--red-seal)] text-[color:var(--red-seal)]" },
+  { value: "in_progress", label: { ja: "対応中", zh: "处理中", en: "In progress" }, tone: "border-[color:var(--gold)] text-[color:var(--gold-dark)]" },
+  { value: "replied", label: { ja: "返信済み", zh: "已回复", en: "Replied" }, tone: "border-[#758d6a] text-[#4f6d45]" },
+  { value: "completed", label: { ja: "完了", zh: "已完成", en: "Completed" }, tone: "border-[#607d8b] text-[#455a64]" },
+  { value: "rejected", label: { ja: "不採用", zh: "不采用", en: "Rejected" }, tone: "border-[color:var(--border)] text-[color:var(--muted)]" },
+  { value: "archived", label: { ja: "アーカイブ", zh: "归档", en: "Archived" }, tone: "border-[color:var(--border)] text-[color:var(--muted)]" }
 ];
 
-const statusLabels = Object.fromEntries(statusOptions.map((item) => [item.value, item.label])) as Record<RequestStatus, string>;
 const statusTones = Object.fromEntries(statusOptions.map((item) => [item.value, item.tone])) as Record<RequestStatus, string>;
+const statusText = Object.fromEntries(statusOptions.map((item) => [item.value, item.label])) as Record<RequestStatus, AdminText>;
 
 function stringParam(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
@@ -123,6 +125,8 @@ export default async function AdminAppraisalsPage({
 }) {
   noStore();
   const session = await requireAdmin();
+  const locale = await getAdminLocale();
+  const t = (value: AdminText) => adminText(value, locale);
   const readOnly = session.user.role === "viewer";
   const rawParams = (await searchParams) ?? {};
   const q = stringParam(rawParams.q)?.trim();
@@ -183,7 +187,7 @@ export default async function AdminAppraisalsPage({
       <section className="mt-8 grid gap-4 md:grid-cols-3 xl:grid-cols-6">
         {statusOptions.map((item) => (
           <div key={item.value} className="border border-[color:var(--border)] bg-[color:var(--paper)] p-5">
-            <p className="text-sm text-[color:var(--muted)]">{item.label}</p>
+            <p className="text-sm text-[color:var(--muted)]">{t(item.label)}</p>
             <p className="mt-3 font-serif text-4xl font-light text-[color:var(--gold-dark)]">{countByStatus.get(item.value) ?? 0}</p>
           </div>
         ))}
@@ -192,26 +196,26 @@ export default async function AdminAppraisalsPage({
       <section className="mt-6 border border-[color:var(--border)] bg-[color:var(--paper)] p-5">
         <form className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           <label className="min-w-0 md:col-span-2 xl:col-span-4">
-            <span className="sr-only">搜索</span>
+            <span className="sr-only">{t("搜索")}</span>
             <div className="flex min-h-12 items-center gap-3 border border-[color:var(--border)] bg-[color:var(--ivory)] px-4">
               <Search aria-hidden size={17} className="shrink-0 text-[color:var(--gold-dark)]" />
-              <input name="q" defaultValue={q ?? ""} placeholder="申请编号 / 姓名 / 邮箱 / 说明" className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-[color:var(--muted)]/70" />
+              <input name="q" defaultValue={q ?? ""} placeholder={t({ ja: "申込番号 / 氏名 / メール / 説明", zh: "申请编号 / 姓名 / 邮箱 / 说明", en: "Request no. / name / email / description" })} className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-[color:var(--muted)]/70" />
             </div>
           </label>
           <select name="status" defaultValue={statusFilter ?? ""} className="h-12 border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 text-sm outline-none">
-            <option value="">状态：全部</option>
+            <option value="">{t({ ja: "状態：すべて", zh: "状态：全部", en: "Status: all" })}</option>
             {statusOptions.map((item) => (
-              <option key={item.value} value={item.value}>{item.label}</option>
+              <option key={item.value} value={item.value}>{t(item.label)}</option>
             ))}
           </select>
           <select name="type" defaultValue={type ?? ""} className="h-12 border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 text-sm outline-none">
-            <option value="">类型：全部</option>
+            <option value="">{t({ ja: "種類：すべて", zh: "类型：全部", en: "Type: all" })}</option>
             {typeRows.map((item) => (
               <option key={item.type} value={item.type}>{item.type}</option>
             ))}
           </select>
           <select name="lang" defaultValue={lang ?? ""} className="h-12 border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 text-sm outline-none">
-            <option value="">语言</option>
+            <option value="">{t("语言")}</option>
             <option value="ja">JA</option>
             <option value="zh">ZH</option>
             <option value="en">EN</option>
@@ -220,7 +224,7 @@ export default async function AdminAppraisalsPage({
           <input name="to" defaultValue={to ?? ""} type="date" className="h-12 border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 text-sm outline-none" />
           <button className="inline-flex min-h-12 items-center justify-center gap-2 border border-[color:var(--gold)] bg-[color:var(--gold)] px-4 text-sm text-white">
             <Filter aria-hidden size={16} />
-            筛选
+            {t("筛选")}
           </button>
           <Link href={exportHref(normalizedParams)} className="inline-flex min-h-12 items-center justify-center gap-2 border border-[color:var(--gold)] px-4 text-sm text-[color:var(--gold-dark)]">
             <Download aria-hidden size={16} />
@@ -231,8 +235,8 @@ export default async function AdminAppraisalsPage({
 
       <section className="mt-6 overflow-hidden border border-[color:var(--border)] bg-[color:var(--paper)]">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[color:var(--border)] p-5">
-          <h2 className="font-serif text-2xl font-light">申请记录</h2>
-          <p className="text-sm text-[color:var(--muted)]">共 {total} 条，第 {page} / {pageCount} 页</p>
+          <h2 className="font-serif text-2xl font-light">{t({ ja: "申請記録", zh: "申请记录", en: "Request Records" })}</h2>
+          <p className="text-sm text-[color:var(--muted)]">{t({ ja: `全 ${total} 件、${page} / ${pageCount} ページ`, zh: `共 ${total} 条，第 ${page} / ${pageCount} 页`, en: `${total} total, page ${page} / ${pageCount}` })}</p>
         </div>
 
         <div className="grid gap-0">
@@ -241,7 +245,7 @@ export default async function AdminAppraisalsPage({
               <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_280px]">
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className={`border px-2 py-1 text-xs ${statusTones[row.status]}`}>{statusLabels[row.status]}</span>
+                    <span className={`border px-2 py-1 text-xs ${statusTones[row.status]}`}>{t(statusText[row.status])}</span>
                     <span className="border border-[color:var(--border)] px-2 py-1 text-xs text-[color:var(--muted)]">{row.type}</span>
                     <span className="border border-[color:var(--border)] px-2 py-1 text-xs uppercase text-[color:var(--muted)]">{row.lang}</span>
                   </div>
@@ -257,22 +261,22 @@ export default async function AdminAppraisalsPage({
                     </p>
                     <p className="flex min-w-0 items-start gap-2">
                       <CalendarDays aria-hidden size={15} className="mt-1 shrink-0 text-[color:var(--gold-dark)]" />
-                      <span>{formatDate(row.createdAt)} 提交 / 希望日 {formatDateOnly(row.preferredDate)}</span>
+                      <span>{formatDate(row.createdAt)} {t("提交")} / {t({ ja: "希望日", zh: "希望日", en: "Preferred" })} {formatDateOnly(row.preferredDate)}</span>
                     </p>
-                    <p className="min-w-0 break-words">地区：{row.region ?? "-"} / 类别：{row.itemCategory ?? "-"}</p>
+                    <p className="min-w-0 break-words">{t("地区")}：{row.region ?? "-"} / {t("类别")}：{row.itemCategory ?? "-"}</p>
                   </div>
                   <p className="mt-4 whitespace-pre-wrap break-words border-l border-[color:var(--gold)] pl-4 text-sm leading-7 text-[color:var(--ink)]">
-                    {row.description || "未填写物品说明。"}
+                    {row.description || t({ ja: "品物説明は未入力です。", zh: "未填写物品说明。", en: "No item description was provided." })}
                   </p>
                 </div>
 
                 <div className="grid content-start gap-3">
                   <Link href={mailtoHref(row)} className="inline-flex min-h-11 items-center justify-center gap-2 border border-[color:var(--gold)] px-4 text-sm text-[color:var(--gold-dark)]">
                     <MessageSquareReply aria-hidden size={16} />
-                    打开邮件回复模板
+                    {t("打开邮件回复模板")}
                   </Link>
                   <details className="border border-[color:var(--border)] bg-[color:var(--ivory)] p-3">
-                    <summary className="cursor-pointer text-sm text-[color:var(--gold-dark)]">查看模板正文</summary>
+                    <summary className="cursor-pointer text-sm text-[color:var(--gold-dark)]">{t({ ja: "テンプレート本文を見る", zh: "查看模板正文", en: "View template body" })}</summary>
                     <pre className="mt-3 whitespace-pre-wrap break-words text-xs leading-6 text-[color:var(--muted)]">{replyTemplate(row)}</pre>
                   </details>
                 </div>
@@ -282,7 +286,7 @@ export default async function AdminAppraisalsPage({
                 <section className="min-w-0">
                   <div className="flex items-center gap-2">
                     <FileImage aria-hidden size={17} className="text-[color:var(--gold-dark)]" />
-                    <h4 className="font-serif text-xl font-light">申请图片</h4>
+                    <h4 className="font-serif text-xl font-light">{t({ ja: "申請画像", zh: "申请图片", en: "Request Images" })}</h4>
                   </div>
                   {row.images.length ? (
                     <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -297,7 +301,7 @@ export default async function AdminAppraisalsPage({
                   ) : (
                     <p className="mt-3 flex min-h-16 items-center gap-2 border border-dashed border-[color:var(--border)] px-4 text-sm text-[color:var(--muted)]">
                       <ShieldAlert aria-hidden size={16} className="text-[color:var(--gold-dark)]" />
-                      未上传图片。电话咨询或店头预约可继续处理。
+                      {t({ ja: "画像はアップロードされていません。電話相談や店頭予約として処理できます。", zh: "未上传图片。电话咨询或店头预约可继续处理。", en: "No images uploaded. Phone inquiries or in-store appointments can still be processed." })}
                     </p>
                   )}
                 </section>
@@ -305,29 +309,29 @@ export default async function AdminAppraisalsPage({
                 <form action={updateAppraisalAction} className="grid content-start gap-3 border border-[color:var(--border)] bg-white p-4">
                   <input type="hidden" name="id" value={row.id.toString()} />
                   <label className="grid gap-2 text-sm">
-                    <span className="text-[color:var(--muted)]">处理状态</span>
+                    <span className="text-[color:var(--muted)]">{t("处理状态")}</span>
                     <select name="status" defaultValue={row.status} disabled={readOnly} className="h-12 border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 text-sm outline-none disabled:opacity-70">
                       {statusOptions.map((item) => (
-                        <option key={item.value} value={item.value}>{item.label}</option>
+                        <option key={item.value} value={item.value}>{t(item.label)}</option>
                       ))}
                     </select>
                   </label>
                   <label className="grid gap-2 text-sm">
-                    <span className="text-[color:var(--muted)]">管理员备注</span>
-                    <textarea name="adminNote" defaultValue={row.adminNote ?? ""} disabled={readOnly} rows={5} className="w-full resize-y border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 py-2 text-base leading-7 outline-none disabled:opacity-70" placeholder="记录已电话联系、需补图、估价方向、拒收原因等内部信息。" />
+                    <span className="text-[color:var(--muted)]">{t("管理员备注")}</span>
+                    <textarea name="adminNote" defaultValue={row.adminNote ?? ""} disabled={readOnly} rows={5} className="w-full resize-y border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 py-2 text-base leading-7 outline-none disabled:opacity-70" placeholder={t({ ja: "電話連絡、追加画像、見積方向、受付不可理由などを記録します。", zh: "记录已电话联系、需补图、估价方向、拒收原因等内部信息。", en: "Record phone follow-up, needed images, valuation direction, rejection reason, and internal notes." })} />
                   </label>
                   {readOnly ? (
-                    <p className="border border-[color:var(--border)] px-3 py-2 text-sm text-[color:var(--muted)]">Viewer 只读，不能更新状态或备注。</p>
+                    <p className="border border-[color:var(--border)] px-3 py-2 text-sm text-[color:var(--muted)]">{t({ ja: "Viewer は読み取り専用のため、状態やメモを更新できません。", zh: "Viewer 只读，不能更新状态或备注。", en: "Viewer is read-only and cannot update status or notes." })}</p>
                   ) : (
                     <button className="min-h-11 border border-[color:var(--gold)] bg-[color:var(--gold)] px-4 text-sm text-white">
-                      保存状态与备注
+                      {t("保存状态与备注")}
                     </button>
                   )}
                 </form>
               </div>
             </article>
           )) : (
-            <p className="p-8 text-sm text-[color:var(--muted)]">暂无符合筛选条件的鉴定申请。</p>
+            <p className="p-8 text-sm text-[color:var(--muted)]">{t({ ja: "条件に一致する鑑定申請はありません。", zh: "暂无符合筛选条件的鉴定申请。", en: "No matching appraisal requests." })}</p>
           )}
         </div>
       </section>
@@ -337,13 +341,13 @@ export default async function AdminAppraisalsPage({
           href={pageHref(normalizedParams, Math.max(1, page - 1))}
           className={`min-h-11 border border-[color:var(--border)] px-4 py-3 text-sm ${page <= 1 ? "pointer-events-none opacity-50" : "text-[color:var(--gold-dark)]"}`}
         >
-          上一页
+          {t("上一页")}
         </Link>
         <Link
           href={pageHref(normalizedParams, Math.min(pageCount, page + 1))}
           className={`min-h-11 border border-[color:var(--border)] px-4 py-3 text-sm ${page >= pageCount ? "pointer-events-none opacity-50" : "text-[color:var(--gold-dark)]"}`}
         >
-          下一页
+          {t("下一页")}
         </Link>
       </nav>
     </AdminShell>

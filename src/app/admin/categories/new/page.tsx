@@ -3,6 +3,7 @@ import { AdminCategoryForm } from "@/components/admin-category-form";
 import { AdminShell } from "@/components/admin-shell";
 import { adminMediaAlt } from "@/lib/admin-media";
 import { requireContentEditor } from "@/lib/admin-auth";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ function localized(value: unknown) {
 
 export default async function AdminCategoryNewPage() {
   await requireContentEditor();
+  const locale = await getAdminLocale();
   const [categoryRows, mediaRows] = await Promise.all([
     prisma.category.findMany({
       where: { isActive: true },
@@ -40,7 +42,7 @@ export default async function AdminCategoryNewPage() {
       title="新增分类"
       description="创建三语分类，设置父级、封面图、排序、启用状态和首页展示。"
     >
-      <AdminCategoryForm mode="new" categories={categories} media={media} />
+      <AdminCategoryForm mode="new" categories={categories} media={media} locale={locale} />
     </AdminShell>
   );
 }

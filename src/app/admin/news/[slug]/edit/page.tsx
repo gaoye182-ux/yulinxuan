@@ -4,6 +4,7 @@ import { adminMediaAlt } from "@/lib/admin-media";
 import { AdminContentForm } from "@/components/admin-content-manager";
 import { AdminShell } from "@/components/admin-shell";
 import { requireContentEditor } from "@/lib/admin-auth";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { newsEntries } from "@/lib/content-data";
 import { getCmsContentEntry } from "@/lib/cms-content";
 import { prisma } from "@/lib/prisma";
@@ -33,6 +34,7 @@ export default async function AdminNewsEditPage({
 }) {
   const { slug } = await params;
   await requireContentEditor();
+  const locale = await getAdminLocale();
   const [entry, mediaRows] = await Promise.all([
     getCmsContentEntry("news", slug, { admin: true }),
     prisma.media.findMany({
@@ -52,7 +54,7 @@ export default async function AdminNewsEditPage({
       title="编辑资讯"
       description="编辑三语资讯内容、类型标签、发布状态和 SEO。保存后写入 Prisma news。"
     >
-      <AdminContentForm kind="news" mode="edit" entry={entry} media={media} />
+      <AdminContentForm kind="news" mode="edit" entry={entry} media={media} locale={locale} />
     </AdminShell>
   );
 }

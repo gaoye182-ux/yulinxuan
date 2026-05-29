@@ -4,6 +4,7 @@ import { AdminItemForm } from "@/components/admin-item-form";
 import { AdminShell } from "@/components/admin-shell";
 import { adminMediaAlt } from "@/lib/admin-media";
 import { requireContentEditor } from "@/lib/admin-auth";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default async function AdminItemEditPage({
   params: Promise<{ id: string }>;
 }) {
   await requireContentEditor();
+  const locale = await getAdminLocale();
   const { id } = await params;
   const itemId = BigInt(id);
   const [item, categoryRows, mediaRows] = await Promise.all([
@@ -88,7 +90,7 @@ export default async function AdminItemEditPage({
       title="编辑藏品"
       description="更新藏品三语内容、分类、价格、发布状态、推荐标记、图片排序和 alt 文本。"
     >
-      <AdminItemForm mode="edit" item={formItem} categories={categories} media={media} />
+      <AdminItemForm mode="edit" item={formItem} categories={categories} media={media} locale={locale} />
     </AdminShell>
   );
 }

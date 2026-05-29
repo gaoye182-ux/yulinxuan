@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Globe2, ImageIcon, Save, Trash2 } from "lucide-react";
 import { AdminMediaPicker, type AdminMediaItem } from "@/components/admin-media-picker";
 import { disableCategoryAction, saveCategoryAction } from "@/lib/category-actions";
+import { adminText, type AdminLocale, type AdminText } from "@/lib/admin-i18n";
 import { languages } from "@/lib/i18n";
 
 type Localized = { ja?: string; zh?: string; en?: string };
@@ -89,16 +90,19 @@ export function AdminCategoryForm({
   mode,
   category,
   categories,
-  media
+  media,
+  locale
 }: {
   mode: "new" | "edit";
   category?: AdminCategoryFormValue;
   categories: AdminCategoryOption[];
   media: AdminMediaItem[];
+  locale: AdminLocale;
 }) {
   const [pickerOpen, setPickerOpen] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<AdminMediaItem | null>(category?.coverMedia ?? null);
-  const title = mode === "new" ? "新增分类" : "编辑分类";
+  const t = (value: AdminText) => adminText(value, locale);
+  const title = mode === "new" ? t("新增分类") : t("编辑分类");
   const availableParents = categories.filter((entry) => entry.id !== category?.id);
   const previewUrl = selectedMedia ? mediaUrl(selectedMedia) : "";
 
@@ -115,7 +119,7 @@ export function AdminCategoryForm({
           </div>
           <button className="inline-flex min-h-11 items-center justify-center gap-2 border border-[color:var(--gold)] bg-[color:var(--gold)] px-5 text-sm text-white">
             <Save size={16} />
-            保存分类
+            {t({ ja: "分類を保存", zh: "保存分类", en: "Save Category" })}
           </button>
         </div>
 
@@ -123,7 +127,7 @@ export function AdminCategoryForm({
           <div className="grid min-w-0 gap-5">
             <div className="grid gap-4 md:grid-cols-2">
               <TextField name="slug" label="Slug" defaultValue={category?.slug} placeholder="japanese-art" />
-              <TextField name="sortOrder" label="排序" type="number" defaultValue={category?.sortOrder ?? 0} />
+              <TextField name="sortOrder" label={t("排序")} type="number" defaultValue={category?.sortOrder ?? 0} />
             </div>
 
             <div className="grid gap-5">
@@ -131,11 +135,11 @@ export function AdminCategoryForm({
                 <section key={lang} className="min-w-0 border border-[color:var(--border)] bg-white p-4">
                   <div className="flex items-center gap-2 border-b border-[color:var(--border)] pb-3">
                     <Globe2 aria-hidden size={16} className="text-[color:var(--gold-dark)]" />
-                    <h3 className="font-serif text-xl font-light">{lang.toUpperCase()} 内容</h3>
+                    <h3 className="font-serif text-xl font-light">{lang.toUpperCase()} {t("内容")}</h3>
                   </div>
                   <div className="mt-4 grid gap-4">
-                    <TextField name={`name_${lang}`} label="分类名称" defaultValue={category?.name?.[lang]} />
-                    <TextAreaField name={`description_${lang}`} label="分类说明" defaultValue={category?.description?.[lang]} />
+                    <TextField name={`name_${lang}`} label={t({ ja: "分類名", zh: "分类名称", en: "Category Name" })} defaultValue={category?.name?.[lang]} />
+                    <TextAreaField name={`description_${lang}`} label={t({ ja: "分類説明", zh: "分类说明", en: "Category Description" })} defaultValue={category?.description?.[lang]} />
                   </div>
                 </section>
               ))}
@@ -144,26 +148,26 @@ export function AdminCategoryForm({
 
           <aside className="grid content-start gap-5">
             <section className="border border-[color:var(--border)] bg-white p-4">
-              <h3 className="font-serif text-xl font-light">层级与显示</h3>
+              <h3 className="font-serif text-xl font-light">{t({ ja: "階層と表示", zh: "层级与显示", en: "Hierarchy & Display" })}</h3>
               <div className="mt-4 grid gap-4">
                 <label className="block">
-                  <FieldLabel>父级分类</FieldLabel>
+                  <FieldLabel>{t("父级分类")}</FieldLabel>
                   <select name="parentId" defaultValue={category?.parentId ?? ""} className="mt-2 h-12 w-full border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 text-sm outline-none">
-                    <option value="">无父级</option>
+                    <option value="">{t("无父级")}</option>
                     {availableParents.map((entry) => (
                       <option key={entry.id} value={entry.id}>
-                        {entry.name.ja || entry.slug}
+                        {entry.name[locale] || entry.name.ja || entry.name.zh || entry.name.en || entry.slug}
                       </option>
                     ))}
                   </select>
                 </label>
                 <label className="flex min-h-10 items-center gap-3 text-sm text-[color:var(--muted)]">
                   <input name="isActive" type="checkbox" defaultChecked={category?.isActive ?? true} className="h-4 w-4 accent-[color:var(--gold)]" />
-                  启用分类
+                  {t("启用分类")}
                 </label>
                 <label className="flex min-h-10 items-center gap-3 text-sm text-[color:var(--muted)]">
                   <input name="showOnHome" type="checkbox" defaultChecked={category?.showOnHome ?? true} className="h-4 w-4 accent-[color:var(--gold)]" />
-                  首页展示
+                  {t("首页展示")}
                 </label>
               </div>
             </section>
@@ -171,21 +175,21 @@ export function AdminCategoryForm({
             <section className="border border-[color:var(--border)] bg-white p-4">
               <div className="flex items-center gap-2">
                 <ImageIcon aria-hidden size={17} className="text-[color:var(--gold-dark)]" />
-                <h3 className="font-serif text-xl font-light">分类封面</h3>
+                <h3 className="font-serif text-xl font-light">{t("分类封面")}</h3>
               </div>
               <div className="relative mt-4 aspect-[4/3] overflow-hidden border border-[color:var(--border)] bg-[color:var(--ivory)]">
                 {previewUrl ? (
-                  <Image src={previewUrl} alt={selectedMedia?.altText?.ja || selectedMedia?.filename || "Category cover"} fill sizes="340px" className="object-cover" unoptimized />
+                  <Image src={previewUrl} alt={selectedMedia?.altText?.[locale] || selectedMedia?.altText?.ja || selectedMedia?.filename || "Category cover"} fill sizes="340px" className="object-cover" unoptimized />
                 ) : (
-                  <div className="grid h-full place-items-center text-sm text-[color:var(--muted)]">选择媒体库图片</div>
+                  <div className="grid h-full place-items-center text-sm text-[color:var(--muted)]">{t("选择媒体库图片")}</div>
                 )}
               </div>
               <button type="button" onClick={() => setPickerOpen(true)} className="mt-3 min-h-11 w-full border border-[color:var(--border)] text-sm text-[color:var(--muted)]">
-                从媒体库选择
+                {t("从媒体库选择")}
               </button>
               {selectedMedia ? (
                 <button type="button" onClick={() => setSelectedMedia(null)} className="mt-2 min-h-10 w-full border border-[color:var(--red-seal)] text-sm text-[color:var(--red-seal)]">
-                  清除封面
+                  {t("清除封面")}
                 </button>
               ) : null}
             </section>
@@ -195,11 +199,11 @@ export function AdminCategoryForm({
 
       {mode === "edit" && category?.id ? (
         <section className="border border-[color:var(--red-seal)] bg-[color:var(--paper)] p-5">
-          <h2 className="font-serif text-2xl font-light text-[color:var(--red-seal)]">停用分类</h2>
-          <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">停用后前台分类筛选与首页分类模块不再展示该分类，已有藏品仍保留分类关联。</p>
+          <h2 className="font-serif text-2xl font-light text-[color:var(--red-seal)]">{t("停用分类")}</h2>
+          <p className="mt-3 text-sm leading-7 text-[color:var(--muted)]">{t({ ja: "停止後、前台の分類フィルターと首页分類モジュールには表示されません。既存蔵品の分類関連は保持されます。", zh: "停用后前台分类筛选与首页分类模块不再展示该分类，已有藏品仍保留分类关联。", en: "After disabling, the category is hidden from frontend filters and home category modules. Existing item associations remain." })}</p>
           <button formAction={disableCategoryAction} name="id" value={category.id} className="mt-4 inline-flex min-h-11 items-center gap-2 border border-[color:var(--red-seal)] px-4 text-sm text-[color:var(--red-seal)]">
             <Trash2 size={15} />
-            停用分类
+            {t("停用分类")}
           </button>
         </section>
       ) : null}
@@ -207,6 +211,7 @@ export function AdminCategoryForm({
       {pickerOpen ? (
         <AdminMediaPicker
           media={media}
+          locale={locale}
           onClose={() => setPickerOpen(false)}
           onSelect={(item) => setSelectedMedia(item)}
         />

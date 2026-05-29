@@ -6,6 +6,8 @@ import { EyeOff, FilePenLine, Filter, FolderTree, ImageIcon, Plus, Search } from
 import { AdminShell } from "@/components/admin-shell";
 import { disableCategoryAction } from "@/lib/category-actions";
 import { requireAdmin } from "@/lib/admin-auth";
+import { adminText, type AdminLocale, type AdminText } from "@/lib/admin-i18n";
+import { getAdminLocale } from "@/lib/admin-locale";
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
@@ -21,6 +23,10 @@ function localizedName(value: unknown) {
   return {};
 }
 
+function localizedValue(value: { ja?: string; zh?: string; en?: string }, locale: AdminLocale, fallback = "") {
+  return value[locale] || value.ja || value.zh || value.en || fallback;
+}
+
 export default async function AdminCategoriesPage({
   searchParams
 }: {
@@ -28,6 +34,8 @@ export default async function AdminCategoriesPage({
 }) {
   noStore();
   const session = await requireAdmin();
+  const locale = await getAdminLocale();
+  const t = (value: AdminText) => adminText(value, locale);
   const readOnly = session.user.role === "viewer";
   const params = (await searchParams) ?? {};
   const query = String(params.q ?? "").trim();
@@ -76,7 +84,7 @@ export default async function AdminCategoriesPage({
             { label: "总页数", value: totalPages }
           ].map((item) => (
             <div key={item.label} className="border border-[color:var(--border)] bg-[color:var(--paper)] p-5">
-              <p className="text-sm text-[color:var(--muted)]">{item.label}</p>
+              <p className="text-sm text-[color:var(--muted)]">{t(item.label)}</p>
               <p className="mt-3 font-serif text-4xl font-light text-[color:var(--gold-dark)]">{item.value}</p>
             </div>
           ))}
@@ -85,30 +93,30 @@ export default async function AdminCategoriesPage({
         <section className="border border-[color:var(--border)] bg-[color:var(--paper)] p-5">
           <form className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_180px_auto_auto]">
             <label className="min-w-0">
-              <span className="sr-only">搜索</span>
+              <span className="sr-only">{t("搜索")}</span>
               <div className="flex min-h-12 items-center gap-3 border border-[color:var(--border)] bg-[color:var(--ivory)] px-4">
                 <Search aria-hidden size={17} className="shrink-0 text-[color:var(--gold-dark)]" />
-                <input name="q" defaultValue={query} placeholder="搜索 slug" className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-[color:var(--muted)]/70" />
+                <input name="q" defaultValue={query} placeholder={t({ ja: "slug を検索", zh: "搜索 slug", en: "Search slug" })} className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-[color:var(--muted)]/70" />
               </div>
             </label>
             <label>
-              <span className="sr-only">状态</span>
+              <span className="sr-only">{t("状态")}</span>
               <select name="status" defaultValue={status} className="h-12 w-full border border-[color:var(--border)] bg-[color:var(--ivory)] px-3 text-sm outline-none">
-                <option value="active">启用</option>
-                <option value="inactive">停用</option>
-                <option value="all">全部</option>
+                <option value="active">{t("启用")}</option>
+                <option value="inactive">{t("停用")}</option>
+                <option value="all">{t("全部")}</option>
               </select>
             </label>
             <button className="inline-flex min-h-12 items-center justify-center gap-2 border border-[color:var(--gold)] px-4 text-sm text-[color:var(--gold-dark)]">
               <Filter aria-hidden size={16} />
-              筛选
+              {t("筛选")}
             </button>
             {readOnly ? (
-              <span className="inline-flex min-h-12 items-center justify-center border border-[color:var(--border)] px-4 text-sm text-[color:var(--muted)]">只读</span>
+              <span className="inline-flex min-h-12 items-center justify-center border border-[color:var(--border)] px-4 text-sm text-[color:var(--muted)]">{t("只读")}</span>
             ) : (
               <Link href="/admin/categories/new" className="inline-flex min-h-12 items-center justify-center gap-2 border border-[color:var(--gold)] bg-[color:var(--gold)] px-4 text-sm text-white">
                 <Plus aria-hidden size={16} />
-                新增分类
+                {t("新增分类")}
               </Link>
             )}
           </form>
@@ -116,8 +124,8 @@ export default async function AdminCategoriesPage({
 
         <section className="overflow-hidden border border-[color:var(--border)] bg-[color:var(--paper)]">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[color:var(--border)] px-5 py-4">
-            <h2 className="font-serif text-2xl font-light">分类列表</h2>
-            <p className="text-sm text-[color:var(--muted)]">首页展示和前台筛选只读取启用分类。</p>
+            <h2 className="font-serif text-2xl font-light">{t({ ja: "分類一覧", zh: "分类列表", en: "Category List" })}</h2>
+            <p className="text-sm text-[color:var(--muted)]">{t({ ja: "首页表示と前台フィルターは有効な分類のみを読み込みます。", zh: "首页展示和前台筛选只读取启用分类。", en: "Home display and frontend filters only use active categories." })}</p>
           </div>
 
           <div className="grid gap-0">
@@ -130,7 +138,7 @@ export default async function AdminCategoriesPage({
                 <article key={category.id.toString()} className="grid min-w-0 gap-4 border-b border-[color:var(--border)] p-5 last:border-b-0 lg:grid-cols-[96px_minmax(0,1fr)_190px_220px]">
                   <div className="relative h-24 w-24 overflow-hidden border border-[color:var(--border)] bg-[color:var(--ivory)]">
                     {imageUrl ? (
-                      <Image src={imageUrl} alt={name.ja ?? category.slug} fill sizes="96px" className="object-cover" unoptimized />
+                      <Image src={imageUrl} alt={localizedValue(name, locale, category.slug)} fill sizes="96px" className="object-cover" unoptimized />
                     ) : (
                       <div className="grid h-full place-items-center text-[color:var(--gold-dark)]">
                         <ImageIcon aria-hidden size={24} />
@@ -140,13 +148,13 @@ export default async function AdminCategoriesPage({
                   <div className="min-w-0">
                     <div className="flex flex-wrap gap-2 text-xs">
                       <span className={`border px-2 py-1 ${category.isActive ? "border-[color:var(--gold)] text-[color:var(--gold-dark)]" : "border-[color:var(--red-seal)] text-[color:var(--red-seal)]"}`}>
-                        {category.isActive ? "启用" : "停用"}
+                        {category.isActive ? t("启用") : t("停用")}
                       </span>
-                      {category.showOnHome ? <span className="border border-[color:var(--border)] px-2 py-1 text-[color:var(--muted)]">首页展示</span> : null}
-                      {category.parent ? <span className="border border-[color:var(--border)] px-2 py-1 text-[color:var(--muted)]">子分类</span> : null}
+                      {category.showOnHome ? <span className="border border-[color:var(--border)] px-2 py-1 text-[color:var(--muted)]">{t({ ja: "首页表示", zh: "首页展示", en: "Home display" })}</span> : null}
+                      {category.parent ? <span className="border border-[color:var(--border)] px-2 py-1 text-[color:var(--muted)]">{t({ ja: "子分類", zh: "子分类", en: "Child category" })}</span> : null}
                     </div>
-                    <h3 className="mt-3 break-words font-serif text-2xl font-light">{name.ja ?? category.slug}</h3>
-                    <p className="mt-2 break-words text-sm text-[color:var(--muted)]">{description.ja || category.slug}</p>
+                    <h3 className="mt-3 break-words font-serif text-2xl font-light">{localizedValue(name, locale, category.slug)}</h3>
+                    <p className="mt-2 break-words text-sm text-[color:var(--muted)]">{localizedValue(description, locale, category.slug)}</p>
                   </div>
                   <dl className="grid content-start gap-3 text-sm">
                     <div>
@@ -154,23 +162,25 @@ export default async function AdminCategoriesPage({
                       <dd className="mt-1 break-words text-[color:var(--muted)]">{category.slug}</dd>
                     </div>
                     <div>
-                      <dt className="text-xs text-[color:var(--gold-dark)]">父级</dt>
-                      <dd className="mt-1 break-words text-[color:var(--muted)]">{parent.ja ?? category.parent?.slug ?? "-"}</dd>
+                      <dt className="text-xs text-[color:var(--gold-dark)]">{t("父级")}</dt>
+                      <dd className="mt-1 break-words text-[color:var(--muted)]">{localizedValue(parent, locale, category.parent?.slug ?? "-")}</dd>
                     </div>
                     <div>
-                      <dt className="text-xs text-[color:var(--gold-dark)]">关联</dt>
-                      <dd className="mt-1 text-[color:var(--muted)]">{category._count.items} 藏品 / {category._count.children} 子类</dd>
+                      <dt className="text-xs text-[color:var(--gold-dark)]">{t("关联")}</dt>
+                      <dd className="mt-1 text-[color:var(--muted)]">
+                        {t({ ja: `${category._count.items} 蔵品 / ${category._count.children} 子分類`, zh: `${category._count.items} 藏品 / ${category._count.children} 子类`, en: `${category._count.items} items / ${category._count.children} children` })}
+                      </dd>
                     </div>
                   </dl>
                   <div className="flex flex-wrap content-start gap-2 lg:justify-end">
-                    <Link href={`/ja/collection/${category.slug}`} className="inline-flex min-h-10 items-center gap-2 border border-[color:var(--border)] px-3 text-sm text-[color:var(--muted)] hover:border-[color:var(--gold)]">
+                    <Link href={`/${locale}/collection/${category.slug}`} className="inline-flex min-h-10 items-center gap-2 border border-[color:var(--border)] px-3 text-sm text-[color:var(--muted)] hover:border-[color:var(--gold)]">
                       <FolderTree aria-hidden size={15} />
-                      前台
+                      {t("前台")}
                     </Link>
                     {readOnly ? null : (
                       <Link href={`/admin/categories/${category.id.toString()}/edit`} className="inline-flex min-h-10 items-center gap-2 border border-[color:var(--gold)] px-3 text-sm text-[color:var(--gold-dark)] hover:bg-[color:var(--gold)] hover:text-white">
                         <FilePenLine aria-hidden size={15} />
-                        编辑
+                        {t("编辑")}
                       </Link>
                     )}
                     {!readOnly && category.isActive ? (
@@ -178,7 +188,7 @@ export default async function AdminCategoriesPage({
                         <input type="hidden" name="id" value={category.id.toString()} />
                         <button className="inline-flex min-h-10 items-center gap-2 border border-[color:var(--red-seal)] px-3 text-sm text-[color:var(--red-seal)]">
                           <EyeOff aria-hidden size={15} />
-                          停用
+                          {t("停用")}
                         </button>
                       </form>
                     ) : null}
@@ -186,7 +196,7 @@ export default async function AdminCategoriesPage({
                 </article>
               );
             }) : (
-              <p className="p-8 text-sm text-[color:var(--muted)]">没有符合条件的分类。</p>
+              <p className="p-8 text-sm text-[color:var(--muted)]">{t({ ja: "条件に一致する分類はありません。", zh: "没有符合条件的分类。", en: "No matching categories." })}</p>
             )}
           </div>
         </section>
