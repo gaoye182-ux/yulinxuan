@@ -85,14 +85,14 @@ export function SiteHeader({ lang, settings, navigation }: SiteHeaderProps) {
     <>
       <header className="sticky top-0 z-40 border-b border-[color:var(--gold)]/35 bg-[rgba(249,245,238,0.97)] backdrop-blur">
         <div className="site-header-inner mx-auto flex min-h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
-          <Link href={localizedPath(lang)} className="group flex min-w-0 items-center gap-2.5 leading-none sm:gap-3">
+          <Link href={localizedPath(lang)} className="group flex min-w-0 items-start gap-2.5 leading-none sm:gap-3">
             <Image
               src={brandLogoSrc}
               alt=""
               width={90}
               height={90}
               priority
-              className="size-11 shrink-0 object-contain sm:size-12 lg:size-14"
+              className="size-[33px] shrink-0 object-contain sm:size-[38px]"
             />
             <span className="flex min-w-0 flex-col">
               <span className="truncate font-serif text-xl tracking-[0.1em] text-[color:var(--ink)] sm:text-2xl sm:tracking-[0.12em]">
@@ -187,13 +187,13 @@ export function SiteHeader({ lang, settings, navigation }: SiteHeaderProps) {
           aria-label={menuCopy.open}
         >
           <div className="flex items-center justify-between">
-            <a href={localizedPath(lang)} className="flex min-w-0 items-center gap-3 leading-none">
+            <a href={localizedPath(lang)} className="flex min-w-0 items-start gap-3 leading-none">
               <Image
                 src={brandLogoSrc}
                 alt=""
                 width={96}
                 height={96}
-                className="size-14 shrink-0 object-contain"
+                className="size-[38px] shrink-0 object-contain"
               />
               <span className="flex min-w-0 flex-col">
                 <span className="truncate font-serif text-2xl tracking-[0.12em]">
