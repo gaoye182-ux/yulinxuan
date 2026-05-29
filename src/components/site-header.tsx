@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { languages, localize, type Language } from "@/lib/i18n";
 import { localizedPath, mainNav } from "@/lib/navigation";
@@ -27,6 +29,18 @@ const languageNames: Record<Language, string> = {
   en: "English"
 };
 
+const languageShortNames: Record<Language, string> = {
+  ja: "JA",
+  zh: "中文",
+  en: "EN"
+};
+
+const menuLabels: Record<Language, { open: string; close: string; language: string }> = {
+  ja: { open: "メニューを開く", close: "メニューを閉じる", language: "言語" },
+  zh: { open: "打开菜单", close: "关闭菜单", language: "语言" },
+  en: { open: "Open menu", close: "Close menu", language: "Language" }
+};
+
 function telHref(phone: string) {
   const compact = phone.replace(/[^\d+]/g, "");
 
@@ -34,6 +48,8 @@ function telHref(phone: string) {
 }
 
 export function SiteHeader({ lang, settings, navigation }: SiteHeaderProps) {
+  const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const brandName = localize(settings.company.name, lang);
   const brandSubLabel = localize(settings.company.legalName, "en").toUpperCase();
   const phoneHref = telHref(settings.contact.phone);
@@ -41,128 +57,176 @@ export function SiteHeader({ lang, settings, navigation }: SiteHeaderProps) {
     ? navigation.items
     : mainNav.map((item) => ({ href: item.href, label: item.label[lang] }));
   const contactText = navigation?.contactLabel || contactLabel[lang];
+  const menuCopy = menuLabels[lang];
+
+  function languagePath(language: Language) {
+    const currentPrefix = `/${lang}`;
+
+    if (pathname === currentPrefix) {
+      return localizedPath(language);
+    }
+
+    if (pathname.startsWith(`${currentPrefix}/`)) {
+      return `/${language}${pathname.slice(currentPrefix.length)}`;
+    }
+
+    return localizedPath(language);
+  }
 
   function handleLanguageChange(language: string) {
-    window.location.href = localizedPath(language as Language);
+    window.location.href = languagePath(language as Language);
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[color:var(--gold)]/35 bg-[rgba(249,245,238,0.97)] backdrop-blur">
-      <div className="site-header-inner mx-auto flex min-h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
-        <Link href={localizedPath(lang)} className="group flex flex-col leading-none">
-          <span className="font-serif text-2xl tracking-[0.12em] text-[color:var(--ink)]">
-            {brandName}
-          </span>
-          <span className="mt-1 text-[10px] tracking-[0.38em] text-[color:var(--gold)]">
-            {brandSubLabel}
-          </span>
-        </Link>
-
-        <nav className="hidden items-center gap-5 text-sm text-[color:var(--ink)] lg:flex">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={localizedPath(lang, item.href)}
-              className="underline-offset-8 transition hover:text-[color:var(--gold)] hover:underline"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="hidden items-center gap-5 lg:flex">
-          <div className="relative">
-            <select
-              value={lang}
-              onChange={(event) => handleLanguageChange(event.target.value)}
-              aria-label="Language"
-              className="h-10 appearance-none border border-[color:var(--border)] bg-[color:var(--paper)] pl-4 pr-9 text-xs tracking-[0.08em] text-[color:var(--ink)] outline-none transition hover:border-[color:var(--gold)]"
-            >
-              {languages.map((language) => (
-                <option key={language} value={language}>
-                  {languageNames[language]}
-                </option>
-              ))}
-            </select>
-            <ChevronDown
-              aria-hidden
-              size={14}
-              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[color:var(--gold)]"
-            />
-          </div>
-          <Link
-            href={localizedPath(lang, "/contact")}
-            className="border border-[color:var(--gold)] px-5 py-3 text-xs tracking-[0.18em] text-[color:var(--gold)] transition hover:bg-[color:var(--gold)] hover:text-white"
-          >
-            {contactText}
+    <>
+      <header className="sticky top-0 z-40 border-b border-[color:var(--gold)]/35 bg-[rgba(249,245,238,0.97)] backdrop-blur">
+        <div className="site-header-inner mx-auto flex min-h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
+          <Link href={localizedPath(lang)} className="group flex flex-col leading-none">
+            <span className="font-serif text-2xl tracking-[0.12em] text-[color:var(--ink)]">
+              {brandName}
+            </span>
+            <span className="mt-1 text-[10px] tracking-[0.38em] text-[color:var(--gold)]">
+              {brandSubLabel}
+            </span>
           </Link>
+
+          <nav className="hidden items-center gap-5 text-sm text-[color:var(--ink)] lg:flex">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={localizedPath(lang, item.href)}
+                className="underline-offset-8 transition hover:text-[color:var(--gold)] hover:underline"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="hidden items-center gap-5 lg:flex">
+            <div className="relative">
+              <select
+                value={lang}
+                onChange={(event) => handleLanguageChange(event.target.value)}
+                aria-label={menuCopy.language}
+                className="h-10 appearance-none border border-[color:var(--border)] bg-[color:var(--paper)] pl-4 pr-9 text-xs tracking-[0.08em] text-[color:var(--ink)] outline-none transition hover:border-[color:var(--gold)]"
+              >
+                {languages.map((language) => (
+                  <option key={language} value={language}>
+                    {languageNames[language]}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                aria-hidden
+                size={14}
+                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[color:var(--gold)]"
+              />
+            </div>
+            <Link
+              href={localizedPath(lang, "/contact")}
+              className="border border-[color:var(--gold)] px-5 py-3 text-xs tracking-[0.18em] text-[color:var(--gold)] transition hover:bg-[color:var(--gold)] hover:text-white"
+            >
+              {contactText}
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-2 lg:hidden">
+            <div className="relative">
+              <select
+                value={lang}
+                onChange={(event) => handleLanguageChange(event.target.value)}
+                aria-label={menuCopy.language}
+                className="h-11 appearance-none border border-[color:var(--border)] bg-[color:var(--paper)] pl-3 pr-7 text-xs text-[color:var(--ink)] outline-none"
+              >
+                {languages.map((language) => (
+                  <option key={language} value={language}>
+                    {languageNames[language]}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                aria-hidden
+                size={13}
+                className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[color:var(--gold)]"
+              />
+            </div>
+            <button
+              type="button"
+              className="inline-flex size-11 cursor-pointer items-center justify-center border border-[color:var(--border)] text-[color:var(--ink)]"
+              aria-label={menuCopy.open}
+              aria-controls="site-mobile-menu"
+              aria-expanded={isMenuOpen}
+              onClick={() => setIsMenuOpen(true)}
+            >
+              <Menu size={20} />
+            </button>
+          </div>
         </div>
+      </header>
 
-        <input id="site-menu-toggle" type="checkbox" className="peer sr-only" />
-        <label
-          htmlFor="site-menu-toggle"
-          className="inline-flex size-11 cursor-pointer items-center justify-center border border-[color:var(--border)] text-[color:var(--ink)] lg:hidden"
-          aria-label="Open menu"
+      {isMenuOpen ? (
+        <div
+          id="site-mobile-menu"
+          className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-[color:var(--ivory)] px-5 py-5 lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label={menuCopy.open}
         >
-          <Menu size={20} />
-        </label>
-
-        <div className="fixed inset-0 z-50 hidden bg-[color:var(--ivory)] px-5 py-5 peer-checked:block lg:hidden">
           <div className="flex items-center justify-between">
-            <Link href={localizedPath(lang)} className="flex flex-col leading-none">
+            <a href={localizedPath(lang)} className="flex flex-col leading-none">
               <span className="font-serif text-2xl tracking-[0.12em]">{brandName}</span>
               <span className="mt-1 text-[10px] tracking-[0.38em] text-[color:var(--gold)]">
                 {brandSubLabel}
               </span>
-            </Link>
-            <label
-              htmlFor="site-menu-toggle"
+            </a>
+            <button
+              type="button"
               className="inline-flex size-11 cursor-pointer items-center justify-center border border-[color:var(--border)]"
-              aria-label="Close menu"
+              aria-label={menuCopy.close}
+              onClick={() => setIsMenuOpen(false)}
             >
               <X size={20} />
-            </label>
+            </button>
           </div>
 
-          <nav className="mt-12 grid gap-1 border-y border-[color:var(--border)] py-6">
+          <nav className="mt-10 grid gap-1 border-y border-[color:var(--border)] py-6">
             {navItems.map((item) => (
-              <Link
+              <a
                 key={item.href}
                 href={localizedPath(lang, item.href)}
                 className="min-h-12 py-3 font-serif text-2xl text-[color:var(--ink)]"
               >
                 {item.label}
-              </Link>
+              </a>
             ))}
-            <Link
+            <a
               href={localizedPath(lang, "/contact")}
               className="min-h-12 py-3 font-serif text-2xl text-[color:var(--ink)]"
             >
               {contactText}
-            </Link>
+            </a>
           </nav>
 
-          <div className="relative mt-8 max-w-xs">
-            <select
-              value={lang}
-              onChange={(event) => handleLanguageChange(event.target.value)}
-              aria-label="Language"
-              className="h-12 w-full appearance-none border border-[color:var(--border)] bg-[color:var(--paper)] pl-4 pr-10 text-sm text-[color:var(--ink)] outline-none"
-            >
+          <div className="mt-8">
+            <p className="text-xs tracking-[0.18em] text-[color:var(--muted)]">{menuCopy.language}</p>
+            <div className="mt-3 grid grid-cols-3 border border-[color:var(--border)] bg-[color:var(--paper)]">
               {languages.map((language) => (
-                <option key={language} value={language}>
-                  {languageNames[language]}
-                </option>
+                <a
+                  key={language}
+                  href={languagePath(language)}
+                  className={`flex min-h-12 items-center justify-center border-r border-[color:var(--border)] text-sm last:border-r-0 ${
+                    language === lang
+                      ? "bg-[color:var(--gold)] text-white"
+                    : "text-[color:var(--ink)]"
+                  }`}
+                >
+                  {languageShortNames[language]}
+                </a>
               ))}
-            </select>
-            <ChevronDown
-              aria-hidden
-              size={16}
-              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[color:var(--gold)]"
-            />
+            </div>
           </div>
 
-          <div className={`absolute bottom-6 left-5 right-5 grid gap-3 ${phoneHref ? "grid-cols-2" : "grid-cols-1"}`}>
+          <div className={`mt-auto grid gap-3 pt-8 ${phoneHref ? "grid-cols-2" : "grid-cols-1"}`}>
             {phoneHref ? (
               <a
                 href={phoneHref}
@@ -171,15 +235,15 @@ export function SiteHeader({ lang, settings, navigation }: SiteHeaderProps) {
                 {settings.contact.phone}
               </a>
             ) : null}
-            <Link
+            <a
               href={localizedPath(lang, "/contact")}
               className="flex min-h-12 items-center justify-center bg-[color:var(--gold)] text-sm text-white"
             >
               {contactText}
-            </Link>
+            </a>
           </div>
         </div>
-      </div>
-    </header>
+      ) : null}
+    </>
   );
 }
