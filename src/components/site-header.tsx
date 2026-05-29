@@ -92,7 +92,7 @@ export function SiteHeader({ lang, settings, navigation }: SiteHeaderProps) {
               width={90}
               height={90}
               priority
-              className="size-[33px] shrink-0 object-contain sm:size-[38px]"
+              className="size-12 shrink-0 object-contain sm:size-[52px]"
             />
             <span className="flex min-w-0 flex-col">
               <span className="truncate font-serif text-xl tracking-[0.1em] text-[color:var(--ink)] sm:text-2xl sm:tracking-[0.12em]">
@@ -193,7 +193,7 @@ export function SiteHeader({ lang, settings, navigation }: SiteHeaderProps) {
                 alt=""
                 width={96}
                 height={96}
-                className="size-[38px] shrink-0 object-contain"
+                className="size-[52px] shrink-0 object-contain"
               />
               <span className="flex min-w-0 flex-col">
                 <span className="truncate font-serif text-2xl tracking-[0.12em]">
