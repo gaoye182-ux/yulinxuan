@@ -9,9 +9,11 @@ import { languages } from "@/lib/i18n";
 
 type AdminLanguageSwitcherProps = {
   activeLocale: AdminLocale;
+  className?: string;
+  selectClassName?: string;
 };
 
-export function AdminLanguageSwitcher({ activeLocale }: AdminLanguageSwitcherProps) {
+export function AdminLanguageSwitcher({ activeLocale, className = "", selectClassName = "" }: AdminLanguageSwitcherProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -23,13 +25,13 @@ export function AdminLanguageSwitcher({ activeLocale }: AdminLanguageSwitcherPro
   }
 
   return (
-    <div className="relative">
+    <div className={`relative ${className}`}>
       <select
         value={activeLocale}
         disabled={isPending}
         aria-label="Admin language"
         onChange={(event) => switchLocale(event.target.value as AdminLocale)}
-        className="h-11 min-w-36 appearance-none border border-[color:var(--border)] bg-[color:var(--ivory)] pl-3 pr-9 text-sm text-[color:var(--ink)] outline-none transition hover:border-[color:var(--gold)] disabled:opacity-60"
+        className={`h-11 min-w-36 appearance-none border border-[color:var(--border)] bg-[color:var(--ivory)] pl-3 pr-9 text-sm text-[color:var(--ink)] outline-none transition hover:border-[color:var(--gold)] disabled:opacity-60 ${selectClassName}`}
       >
         {languages.map((locale) => (
           <option key={locale} value={locale}>
